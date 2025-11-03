@@ -1,5 +1,5 @@
 import java.util.*;
-
+//program menghitung luas bangun datar sederhana
 public class Main{
     public static void main(String[] args) {
         Scanner input = new Scanner(System.in);
