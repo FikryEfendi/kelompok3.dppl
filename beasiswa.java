@@ -1,6 +1,7 @@
-import java.util.*;
-//program menghitung luas bangun datar sederhana
-public class Main{
+import java.util.Scanner;
+
+public class beasiswa {
+    public class Main{
     public static void main(String[] args) {
         Scanner input = new Scanner(System.in);
         boolean kondisi = true;
@@ -46,4 +47,5 @@ public class Main{
 
         }
     }
+}
 }
