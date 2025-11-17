@@ -1,10 +1,10 @@
-import javax.swing.*;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.nio.file.*;
 import java.util.List;
+import javax.swing.*;
 
 public class ApplicationFormPanel extends JPanel {
     MainWindow win; 
@@ -38,7 +38,7 @@ public class ApplicationFormPanel extends JPanel {
         fullName.setMaximumSize(new Dimension(600,28)); 
         form.add(fullName);
         
-        form.add(new JLabel("TTL")); 
+        form.add(new JLabel("TTL (mm/dd/yyyy)")); 
         ttl = new JTextField(); 
         ttl.setMaximumSize(new Dimension(600,28)); 
         form.add(ttl);
