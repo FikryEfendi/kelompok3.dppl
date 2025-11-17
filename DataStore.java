@@ -1,5 +1,6 @@
 import java.nio.file.*;
 import java.util.*;
+import java.io.*;
 
 public class DataStore {
     private Path usersFile = Paths.get("users.json");
