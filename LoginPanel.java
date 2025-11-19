@@ -14,14 +14,14 @@ public class LoginPanel extends JPanel {
         setLayout(new BorderLayout());
         setBackground(Color.WHITE);
         
-        // Left illustration area with gradient
+        // Left illustration area with green gradient
         JPanel left = new JPanel() {
             @Override
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
                 Graphics2D g2d = (Graphics2D) g;
                 g2d.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
-                GradientPaint gp = new GradientPaint(0, 0, new Color(99, 102, 241), 0, getHeight(), new Color(139, 92, 246));
+                GradientPaint gp = new GradientPaint(0, 0, new Color(16, 185, 129), 0, getHeight(), new Color(5, 150, 105));
                 g2d.setPaint(gp);
                 g2d.fillRect(0, 0, getWidth(), getHeight());
             }
@@ -29,7 +29,7 @@ public class LoginPanel extends JPanel {
         left.setPreferredSize(new Dimension(400, 0));
         left.setLayout(new GridBagLayout());
         
-        JLabel logoLabel = new JLabel("<html><div style='text-align: center;'><span style='font-size: 48px; color: white;'>🎓</span><br><br><span style='font-size: 24px; color: white; font-weight: bold;'>Sistem Beasiswa</span><br><span style='font-size: 14px; color: rgba(255,255,255,0.8);'>Wujudkan Mimpimu</span></div></html>");
+        JLabel logoLabel = new JLabel("<html><div style='text-align: center;'><span style='font-size: 48px; color: white;'>🎓</span><br><br><span style='font-size: 24px; color: white; font-weight: bold;'>Sistem Beasiswa</span><br><span style='font-size: 14px; color: rgba(255,255,255,0.9);'>Wujudkan Mimpi Pendidikanmu</span></div></html>");
         logoLabel.setHorizontalAlignment(SwingConstants.CENTER);
         left.add(logoLabel);
 
@@ -42,12 +42,12 @@ public class LoginPanel extends JPanel {
         form.setBackground(Color.WHITE);
         form.setBorder(BorderFactory.createEmptyBorder(50, 60, 50, 60));
 
-        JLabel title = new JLabel("Selamat Datang");
+        JLabel title = new JLabel("Selamat Datang Kembali");
         title.setFont(new Font("Segoe UI", Font.BOLD, 28));
         title.setForeground(new Color(31, 41, 55));
         title.setAlignmentX(Component.LEFT_ALIGNMENT);
         
-        JLabel subtitle = new JLabel("Silakan login ke akun Anda");
+        JLabel subtitle = new JLabel("Masuk ke akun Anda untuk melanjutkan");
         subtitle.setFont(new Font("Segoe UI", Font.PLAIN, 14));
         subtitle.setForeground(new Color(107, 114, 128));
         subtitle.setAlignmentX(Component.LEFT_ALIGNMENT);
@@ -96,7 +96,7 @@ public class LoginPanel extends JPanel {
         form.add(Box.createRigidArea(new Dimension(0, 30)));
         
         // Login Button
-        JButton loginBtn = createStyledButton("Login", new Color(99, 102, 241), Color.WHITE);
+        JButton loginBtn = createStyledButton("Masuk", new Color(16, 185, 129), Color.WHITE);
         loginBtn.setMaximumSize(new Dimension(350, 45));
         loginBtn.setAlignmentX(Component.LEFT_ALIGNMENT);
         loginBtn.addActionListener(e -> doLogin());
@@ -127,10 +127,10 @@ public class LoginPanel extends JPanel {
         form.add(Box.createRigidArea(new Dimension(0, 20)));
         
         // Signup Button
-        JButton signupBtn = createStyledButton("Buat Akun Baru", Color.WHITE, new Color(99, 102, 241));
+        JButton signupBtn = createStyledButton("Buat Akun Baru", Color.WHITE, new Color(16, 185, 129));
         signupBtn.setMaximumSize(new Dimension(350, 45));
         signupBtn.setBorder(BorderFactory.createCompoundBorder(
-            BorderFactory.createLineBorder(new Color(99, 102, 241), 2, true),
+            BorderFactory.createLineBorder(new Color(16, 185, 129), 2, true),
             BorderFactory.createEmptyBorder(10, 20, 10, 20)
         ));
         signupBtn.setAlignmentX(Component.LEFT_ALIGNMENT);
@@ -157,7 +157,7 @@ public class LoginPanel extends JPanel {
                 if (bg.equals(Color.WHITE)) {
                     btn.setBackground(new Color(243, 244, 246));
                 } else {
-                    btn.setBackground(bg.darker());
+                    btn.setBackground(new Color(5, 150, 105));
                 }
             }
             public void mouseExited(java.awt.event.MouseEvent evt) {
@@ -174,6 +174,20 @@ public class LoginPanel extends JPanel {
         
         if (nim.isEmpty() || pass.isEmpty()) {
             showError("Mohon isi semua field");
+            return;
+        }
+        
+        // Check for admin login
+        if(nim.equals("admin") && pass.equals("admin123")){
+            try { 
+                java.nio.file.Files.write(java.nio.file.Paths.get("current_nim.txt"), "admin".getBytes()); 
+            } catch(Exception ex){
+                ex.printStackTrace();
+            }
+            win.show("loading");
+            Timer timer = new Timer(1200, evt -> win.show("adminHome"));
+            timer.setRepeats(false);
+            timer.start();
             return;
         }
         

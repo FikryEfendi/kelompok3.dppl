@@ -7,17 +7,19 @@ public class MainWindow extends JFrame {
     DataStore store;
 
     public MainWindow() {
-        setTitle("Sistem Beasiswa");
-        setSize(900,600);
+        setTitle("Sistem Beasiswa Universitas Riau");
+        setSize(1000,650);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
 
         store = new DataStore();
 
-        // create panels
+        // Create all panels
         LoginPanel login = new LoginPanel(this, store);
         SignupPanel signup = new SignupPanel(this, store);
         LoadingPanel loading = new LoadingPanel(this);
+        
+        // Student panels
         HomePanel home = new HomePanel(this, store);
         HelpPanel help = new HelpPanel(this, store);
         ScholarshipListPanel list = new ScholarshipListPanel(this, store);
@@ -27,8 +29,15 @@ public class MainWindow extends JFrame {
         StatusOverviewPanel status = new StatusOverviewPanel(this, store);
         StatusDetailPanel statusDetail = new StatusDetailPanel(this, store);
         CongratulationsPanel congrats = new CongratulationsPanel(this, store);
+        
+        // Admin panels
+        AdminHomePanel adminHome = new AdminHomePanel(this, store);
+        ManageScholarshipsPanel manageSchol = new ManageScholarshipsPanel(this, store);
+        ManageApplicantsPanel manageApps = new ManageApplicantsPanel(this, store);
+        ManageAnnouncementsPanel manageAnnounce = new ManageAnnouncementsPanel(this, store);
+        ReportsPanel reports = new ReportsPanel(this, store);
 
-        // add to cards
+        // Add all panels to cards
         cards.add(login, "login");
         cards.add(signup, "signup");
         cards.add(loading, "loading");
@@ -41,9 +50,16 @@ public class MainWindow extends JFrame {
         cards.add(status, "status");
         cards.add(statusDetail, "statusDetail");
         cards.add(congrats, "congrats");
+        
+        // Admin panels
+        cards.add(adminHome, "adminHome");
+        cards.add(manageSchol, "manageScholarships");
+        cards.add(manageApps, "manageApplicants");
+        cards.add(manageAnnounce, "manageAnnouncements");
+        cards.add(reports, "reports");
 
         add(cards);
-        // start at login
+        // Start at login
         show("login");
     }
 

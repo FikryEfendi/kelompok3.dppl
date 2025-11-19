@@ -19,20 +19,17 @@ public class HomePanel extends JPanel {
             currentNim = new String(Files.readAllBytes(Paths.get("current_nim.txt"))).trim();
         } catch(Exception e){}
         
-        // Top navigation bar
+        // Top navigation bar with green theme
         JPanel topNav = new JPanel(new BorderLayout());
-        topNav.setBackground(Color.WHITE);
-        topNav.setBorder(BorderFactory.createCompoundBorder(
-            BorderFactory.createMatteBorder(0, 0, 1, 0, new Color(229, 231, 235)),
-            BorderFactory.createEmptyBorder(15, 30, 15, 30)
-        ));
+        topNav.setBackground(new Color(16, 185, 129)); // Green primary
+        topNav.setBorder(BorderFactory.createEmptyBorder(15, 30, 15, 30));
         
         JLabel logo = new JLabel("🎓 Sistem Beasiswa");
         logo.setFont(new Font("Segoe UI", Font.BOLD, 20));
-        logo.setForeground(new Color(99, 102, 241));
+        logo.setForeground(Color.WHITE);
         
         JPanel navButtons = new JPanel(new FlowLayout(FlowLayout.RIGHT, 15, 0));
-        navButtons.setBackground(Color.WHITE);
+        navButtons.setBackground(new Color(16, 185, 129));
         
         String[] items = {"Beranda", "Daftar Beasiswa", "Pengumuman", "Bantuan"};
         String[] icons = {"🏠", "📋", "📢", "💬"};
@@ -48,15 +45,15 @@ public class HomePanel extends JPanel {
         
         // Main content
         JPanel mainContent = new JPanel(new BorderLayout());
-        mainContent.setBackground(new Color(249, 250, 251));
+        mainContent.setBackground(new Color(240, 253, 244)); // Light green background
         mainContent.setBorder(BorderFactory.createEmptyBorder(30, 40, 30, 40));
         
-        // Welcome section
+        // Welcome section with green accent
         JPanel welcomeSection = new JPanel();
         welcomeSection.setLayout(new BoxLayout(welcomeSection, BoxLayout.Y_AXIS));
         welcomeSection.setBackground(Color.WHITE);
         welcomeSection.setBorder(BorderFactory.createCompoundBorder(
-            BorderFactory.createLineBorder(new Color(229, 231, 235), 1, true),
+            BorderFactory.createLineBorder(new Color(167, 243, 208), 2, true), // Green border
             BorderFactory.createEmptyBorder(30, 30, 30, 30)
         ));
         
@@ -67,50 +64,48 @@ public class HomePanel extends JPanel {
         
         JLabel subtitle = new JLabel("NIM: " + currentNim);
         subtitle.setFont(new Font("Segoe UI", Font.PLAIN, 14));
-        subtitle.setForeground(new Color(107, 114, 128));
+        subtitle.setForeground(new Color(5, 150, 105)); // Dark green
         subtitle.setAlignmentX(Component.LEFT_ALIGNMENT);
         
         welcomeSection.add(welcomeLabel);
         welcomeSection.add(Box.createRigidArea(new Dimension(0, 5)));
         welcomeSection.add(subtitle);
         
-        // Quick actions
+        // Quick actions with green theme
         JPanel quickActions = new JPanel(new GridLayout(1, 3, 20, 0));
-        quickActions.setBackground(new Color(249, 250, 251));
+        quickActions.setBackground(new Color(240, 253, 244));
         quickActions.setBorder(BorderFactory.createEmptyBorder(25, 0, 25, 0));
         
         quickActions.add(createActionCard("📝", "Daftar Beasiswa", "Lihat dan daftar beasiswa tersedia", () -> win.show("list")));
         quickActions.add(createActionCard("📊", "Cek Status", "Pantau status pendaftaran Anda", () -> win.show("status")));
         quickActions.add(createActionCard("💡", "Bantuan", "Butuh bantuan? Hubungi kami", () -> win.show("help")));
         
-        // Scholarship recommendations
+        // Scholarship recommendations with green accent
         JPanel recommendSection = new JPanel();
         recommendSection.setLayout(new BorderLayout());
         recommendSection.setBackground(Color.WHITE);
         recommendSection.setBorder(BorderFactory.createCompoundBorder(
-            BorderFactory.createLineBorder(new Color(229, 231, 235), 1, true),
+            BorderFactory.createLineBorder(new Color(167, 243, 208), 2, true),
             BorderFactory.createEmptyBorder(25, 25, 25, 25)
         ));
         
         JLabel recTitle = new JLabel("🌟 Rekomendasi Beasiswa");
         recTitle.setFont(new Font("Segoe UI", Font.BOLD, 18));
-        recTitle.setForeground(new Color(31, 41, 55));
+        recTitle.setForeground(new Color(6, 78, 59)); // Dark green
         
         JPanel scholarshipList = new JPanel();
         scholarshipList.setLayout(new BoxLayout(scholarshipList, BoxLayout.Y_AXIS));
         scholarshipList.setBackground(Color.WHITE);
         scholarshipList.setBorder(BorderFactory.createEmptyBorder(15, 0, 0, 0));
         
-        String[] scholarships = {
-            "Beasiswa Prestasi Akademik - Untuk mahasiswa berprestasi",
-            "Beasiswa Penelitian - Untuk peneliti muda berbakat",
-            "Beasiswa Ekonomi - Bantuan untuk mahasiswa kurang mampu"
-        };
-        
-        for(String sch : scholarships){
-            JPanel item = createScholarshipItem(sch);
-            scholarshipList.add(item);
-            scholarshipList.add(Box.createRigidArea(new Dimension(0, 10)));
+        // Get real scholarships from database
+        java.util.List<Scholarship> scholarships = store.loadScholarships();
+        for(Scholarship sch : scholarships){
+            if(sch.status.equals("Active")){
+                JPanel item = createScholarshipItem(sch.name + " - " + sch.description);
+                scholarshipList.add(item);
+                scholarshipList.add(Box.createRigidArea(new Dimension(0, 10)));
+            }
         }
         
         recommendSection.add(recTitle, BorderLayout.NORTH);
@@ -119,7 +114,7 @@ public class HomePanel extends JPanel {
         // Assemble main content
         JPanel contentContainer = new JPanel();
         contentContainer.setLayout(new BoxLayout(contentContainer, BoxLayout.Y_AXIS));
-        contentContainer.setBackground(new Color(249, 250, 251));
+        contentContainer.setBackground(new Color(240, 253, 244));
         
         welcomeSection.setAlignmentX(Component.LEFT_ALIGNMENT);
         quickActions.setAlignmentX(Component.LEFT_ALIGNMENT);
@@ -138,8 +133,8 @@ public class HomePanel extends JPanel {
     private JButton createNavButton(String text){
         JButton btn = new JButton(text);
         btn.setFont(new Font("Segoe UI", Font.PLAIN, 13));
-        btn.setForeground(new Color(75, 85, 99));
-        btn.setBackground(Color.WHITE);
+        btn.setForeground(Color.WHITE);
+        btn.setBackground(new Color(16, 185, 129));
         btn.setBorderPainted(false);
         btn.setFocusPainted(false);
         btn.setCursor(new Cursor(Cursor.HAND_CURSOR));
@@ -147,12 +142,10 @@ public class HomePanel extends JPanel {
         
         btn.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseEntered(java.awt.event.MouseEvent evt) {
-                btn.setBackground(new Color(243, 244, 246));
-                btn.setForeground(new Color(99, 102, 241));
+                btn.setBackground(new Color(5, 150, 105)); // Darker green on hover
             }
             public void mouseExited(java.awt.event.MouseEvent evt) {
-                btn.setBackground(Color.WHITE);
-                btn.setForeground(new Color(75, 85, 99));
+                btn.setBackground(new Color(16, 185, 129));
             }
         });
         
@@ -164,7 +157,7 @@ public class HomePanel extends JPanel {
         card.setLayout(new BoxLayout(card, BoxLayout.Y_AXIS));
         card.setBackground(Color.WHITE);
         card.setBorder(BorderFactory.createCompoundBorder(
-            BorderFactory.createLineBorder(new Color(229, 231, 235), 1, true),
+            BorderFactory.createLineBorder(new Color(167, 243, 208), 1, true),
             BorderFactory.createEmptyBorder(25, 20, 25, 20)
         ));
         card.setCursor(new Cursor(Cursor.HAND_CURSOR));
@@ -175,7 +168,7 @@ public class HomePanel extends JPanel {
         
         JLabel titleLabel = new JLabel(title);
         titleLabel.setFont(new Font("Segoe UI", Font.BOLD, 16));
-        titleLabel.setForeground(new Color(31, 41, 55));
+        titleLabel.setForeground(new Color(6, 78, 59)); // Dark green
         titleLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         
         JLabel descLabel = new JLabel("<html><center>" + desc + "</center></html>");
@@ -194,16 +187,16 @@ public class HomePanel extends JPanel {
                 action.run();
             }
             public void mouseEntered(java.awt.event.MouseEvent evt) {
-                card.setBackground(new Color(249, 250, 251));
+                card.setBackground(new Color(240, 253, 244)); // Light green
                 card.setBorder(BorderFactory.createCompoundBorder(
-                    BorderFactory.createLineBorder(new Color(99, 102, 241), 2, true),
+                    BorderFactory.createLineBorder(new Color(16, 185, 129), 2, true),
                     BorderFactory.createEmptyBorder(24, 19, 24, 19)
                 ));
             }
             public void mouseExited(java.awt.event.MouseEvent evt) {
                 card.setBackground(Color.WHITE);
                 card.setBorder(BorderFactory.createCompoundBorder(
-                    BorderFactory.createLineBorder(new Color(229, 231, 235), 1, true),
+                    BorderFactory.createLineBorder(new Color(167, 243, 208), 1, true),
                     BorderFactory.createEmptyBorder(25, 20, 25, 20)
                 ));
             }
@@ -214,12 +207,12 @@ public class HomePanel extends JPanel {
     
     private JPanel createScholarshipItem(String text){
         JPanel item = new JPanel(new BorderLayout(15, 0));
-        item.setBackground(new Color(249, 250, 251));
+        item.setBackground(new Color(240, 253, 244));
         item.setBorder(BorderFactory.createEmptyBorder(12, 15, 12, 15));
         
         JLabel bullet = new JLabel("✓");
         bullet.setFont(new Font("Segoe UI", Font.BOLD, 16));
-        bullet.setForeground(new Color(16, 185, 129));
+        bullet.setForeground(new Color(16, 185, 129)); // Green checkmark
         
         JLabel label = new JLabel(text);
         label.setFont(new Font("Segoe UI", Font.PLAIN, 14));
