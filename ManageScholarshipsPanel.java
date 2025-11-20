@@ -21,7 +21,7 @@ public class ManageScholarshipsPanel extends JPanel {
         top.setBorder(BorderFactory.createEmptyBorder(15, 25, 15, 25));
 
         JButton back = new JButton("← Kembali");
-        back.setFont(new Font("Segoe UI", Font.BOLD, 13));
+        back.setFont(new Font("Segoe UI Symbol", Font.BOLD, 13));
         back.setForeground(Color.WHITE);
         back.setBackground(new Color(5, 150, 105));
         back.setBorderPainted(false);
@@ -31,7 +31,7 @@ public class ManageScholarshipsPanel extends JPanel {
         back.addActionListener(e -> win.show("adminHome"));
 
         JLabel title = new JLabel("📚 Kelola Beasiswa");
-        title.setFont(new Font("Segoe UI", Font.BOLD, 20));
+        title.setFont(new Font("Segoe UI Symbol", Font.BOLD, 20));
         title.setForeground(Color.WHITE);
 
         top.add(back, BorderLayout.WEST);
@@ -73,9 +73,9 @@ public class ManageScholarshipsPanel extends JPanel {
             }
         };
         table = new JTable(model);
-        table.setFont(new Font("Segoe UI", Font.PLAIN, 13));
+        table.setFont(new Font("Segoe UI Symbol", Font.PLAIN, 13));
         table.setRowHeight(35);
-        table.getTableHeader().setFont(new Font("Segoe UI", Font.BOLD, 13));
+        table.getTableHeader().setFont(new Font("Segoe UI Symbol", Font.BOLD, 13));
         table.getTableHeader().setBackground(new Color(240, 253, 244));
         table.getTableHeader().setForeground(new Color(31, 41, 55));
         table.setSelectionBackground(new Color(209, 250, 229));
@@ -95,7 +95,7 @@ public class ManageScholarshipsPanel extends JPanel {
 
     private JButton createActionButton(String text){
         JButton btn = new JButton(text);
-        btn.setFont(new Font("Segoe UI", Font.BOLD, 13));
+        btn.setFont(new Font("Segoe UI Symbol", Font.BOLD, 13));
         btn.setForeground(Color.WHITE);
         btn.setBackground(new Color(16, 185, 129));
         btn.setBorderPainted(false);
@@ -323,7 +323,7 @@ public class ManageScholarshipsPanel extends JPanel {
     private JTextField createField(){
         JTextField f = new JTextField();
         f.setMaximumSize(new Dimension(Integer.MAX_VALUE, 35));
-        f.setFont(new Font("Segoe UI", Font.PLAIN, 13));
+        f.setFont(new Font("Segoe UI Symbol", Font.PLAIN, 13));
         f.setBorder(BorderFactory.createCompoundBorder(
             BorderFactory.createLineBorder(new Color(209, 213, 219)),
             BorderFactory.createEmptyBorder(5, 10, 5, 10)

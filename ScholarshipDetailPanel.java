@@ -38,7 +38,7 @@ public class ScholarshipDetailPanel extends JPanel {
         top.setBorder(BorderFactory.createEmptyBorder(15, 25, 15, 25));
         
         JButton back = new JButton("← Kembali");
-        back.setFont(new Font("Segoe UI", Font.BOLD, 13));
+        back.setFont(new Font("Segoe UI Symbol", Font.BOLD, 13));
         back.setForeground(Color.WHITE);
         back.setBackground(new Color(5, 150, 105));
         back.setBorderPainted(false);
@@ -48,7 +48,7 @@ public class ScholarshipDetailPanel extends JPanel {
         back.addActionListener(e -> win.show("list"));
         
         JLabel titleLabel = new JLabel("📋 Detail Beasiswa");
-        titleLabel.setFont(new Font("Segoe UI", Font.BOLD, 20));
+        titleLabel.setFont(new Font("Segoe UI Symbol", Font.BOLD, 20));
         titleLabel.setForeground(Color.WHITE);
         
         top.add(back, BorderLayout.WEST);
@@ -72,7 +72,7 @@ public class ScholarshipDetailPanel extends JPanel {
         headerSection.setAlignmentX(Component.LEFT_ALIGNMENT);
         
         JLabel scholarshipTitle = new JLabel(currentScholarship.name);
-        scholarshipTitle.setFont(new Font("Segoe UI", Font.BOLD, 26));
+        scholarshipTitle.setFont(new Font("Segoe UI Symbol", Font.BOLD, 26));
         scholarshipTitle.setForeground(new Color(6, 78, 59));
         scholarshipTitle.setAlignmentX(Component.LEFT_ALIGNMENT);
         
@@ -81,7 +81,7 @@ public class ScholarshipDetailPanel extends JPanel {
         statusPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
         
         JLabel statusBadge = new JLabel("  " + currentScholarship.status + "  ");
-        statusBadge.setFont(new Font("Segoe UI", Font.BOLD, 12));
+        statusBadge.setFont(new Font("Segoe UI Symbol", Font.BOLD, 12));
         statusBadge.setForeground(Color.WHITE);
         statusBadge.setBackground(new Color(16, 185, 129));
         statusBadge.setOpaque(true);
@@ -119,17 +119,17 @@ public class ScholarshipDetailPanel extends JPanel {
         actionSection.setAlignmentX(Component.LEFT_ALIGNMENT);
         
         JLabel actionTitle = new JLabel("Tertarik dengan beasiswa ini?");
-        actionTitle.setFont(new Font("Segoe UI", Font.BOLD, 18));
+        actionTitle.setFont(new Font("Segoe UI Symbol", Font.BOLD, 18));
         actionTitle.setForeground(new Color(6, 78, 59));
         actionTitle.setAlignmentX(Component.LEFT_ALIGNMENT);
         
         JLabel actionDesc = new JLabel("Pastikan Anda memenuhi semua persyaratan sebelum mendaftar.");
-        actionDesc.setFont(new Font("Segoe UI", Font.PLAIN, 13));
+        actionDesc.setFont(new Font("Segoe UI Symbol", Font.PLAIN, 13));
         actionDesc.setForeground(new Color(107, 114, 128));
         actionDesc.setAlignmentX(Component.LEFT_ALIGNMENT);
         
         JButton applyBtn = new JButton("📝 Daftar Sekarang");
-        applyBtn.setFont(new Font("Segoe UI", Font.BOLD, 15));
+        applyBtn.setFont(new Font("Segoe UI Symbol", Font.BOLD, 15));
         applyBtn.setForeground(Color.WHITE);
         applyBtn.setBackground(new Color(16, 185, 129));
         applyBtn.setBorderPainted(false);
@@ -186,12 +186,12 @@ public class ScholarshipDetailPanel extends JPanel {
         ));
         
         JLabel titleLabel = new JLabel(title);
-        titleLabel.setFont(new Font("Segoe UI", Font.PLAIN, 13));
+        titleLabel.setFont(new Font("Segoe UI Symbol", Font.PLAIN, 13));
         titleLabel.setForeground(new Color(107, 114, 128));
         titleLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
         
         JLabel valueLabel = new JLabel(value);
-        valueLabel.setFont(new Font("Segoe UI", Font.BOLD, 18));
+        valueLabel.setFont(new Font("Segoe UI Symbol", Font.BOLD, 18));
         valueLabel.setForeground(new Color(6, 78, 59));
         valueLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
         
@@ -213,7 +213,7 @@ public class ScholarshipDetailPanel extends JPanel {
         section.setAlignmentX(Component.LEFT_ALIGNMENT);
         
         JLabel titleLabel = new JLabel(title);
-        titleLabel.setFont(new Font("Segoe UI", Font.BOLD, 18));
+        titleLabel.setFont(new Font("Segoe UI Symbol", Font.BOLD, 18));
         titleLabel.setForeground(new Color(6, 78, 59));
         titleLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
         
@@ -221,7 +221,7 @@ public class ScholarshipDetailPanel extends JPanel {
         contentArea.setEditable(false);
         contentArea.setLineWrap(true);
         contentArea.setWrapStyleWord(true);
-        contentArea.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+        contentArea.setFont(new Font("Segoe UI Symbol", Font.PLAIN, 14));
         contentArea.setForeground(new Color(55, 65, 81));
         contentArea.setBackground(Color.WHITE);
         contentArea.setBorder(BorderFactory.createEmptyBorder(10, 0, 0, 0));

@@ -19,7 +19,7 @@ public class HelpPanel extends JPanel {
         top.setBorder(BorderFactory.createEmptyBorder(15, 25, 15, 25));
         
         JButton back = new JButton("← Kembali"); 
-        back.setFont(new Font("Segoe UI", Font.BOLD, 13));
+        back.setFont(new Font("Segoe UI Symbol", Font.BOLD, 13));
         back.setForeground(Color.WHITE);
         back.setBackground(new Color(5, 150, 105));
         back.setBorderPainted(false);
@@ -29,7 +29,7 @@ public class HelpPanel extends JPanel {
         back.addActionListener(e -> win.show("home")); 
         
         JLabel titleLabel = new JLabel("💬 Bantuan & Keluhan");
-        titleLabel.setFont(new Font("Segoe UI", Font.BOLD, 20));
+        titleLabel.setFont(new Font("Segoe UI Symbol", Font.BOLD, 20));
         titleLabel.setForeground(Color.WHITE);
         
         top.add(back, BorderLayout.WEST);
@@ -52,13 +52,13 @@ public class HelpPanel extends JPanel {
         form.setAlignmentX(Component.LEFT_ALIGNMENT);
         
         JLabel title = new JLabel("Sampaikan Keluhan Anda");
-        title.setFont(new Font("Segoe UI", Font.BOLD, 20));
+        title.setFont(new Font("Segoe UI Symbol", Font.BOLD, 20));
         title.setForeground(new Color(6, 78, 59));
         title.setAlignmentX(Component.LEFT_ALIGNMENT);
         form.add(title);
         
         JLabel subtitle = new JLabel("Kami siap membantu menyelesaikan masalah Anda");
-        subtitle.setFont(new Font("Segoe UI", Font.PLAIN, 13));
+        subtitle.setFont(new Font("Segoe UI Symbol", Font.PLAIN, 13));
         subtitle.setForeground(new Color(107, 114, 128));
         subtitle.setAlignmentX(Component.LEFT_ALIGNMENT);
         form.add(subtitle);
@@ -66,7 +66,7 @@ public class HelpPanel extends JPanel {
         
         // Subject
         JLabel subjectLabel = new JLabel("Subjek Keluhan");
-        subjectLabel.setFont(new Font("Segoe UI", Font.BOLD, 14));
+        subjectLabel.setFont(new Font("Segoe UI Symbol", Font.BOLD, 14));
         subjectLabel.setForeground(new Color(55, 65, 81));
         subjectLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
         form.add(subjectLabel);
@@ -74,7 +74,7 @@ public class HelpPanel extends JPanel {
         
         subject = new JTextField(); 
         subject.setMaximumSize(new Dimension(Integer.MAX_VALUE, 40)); 
-        subject.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+        subject.setFont(new Font("Segoe UI Symbol", Font.PLAIN, 14));
         subject.setBorder(BorderFactory.createCompoundBorder(
             BorderFactory.createLineBorder(new Color(209, 213, 219), 1, true),
             BorderFactory.createEmptyBorder(8, 12, 8, 12)
@@ -85,7 +85,7 @@ public class HelpPanel extends JPanel {
         
         // Body
         JLabel bodyLabel = new JLabel("Detail Keluhan");
-        bodyLabel.setFont(new Font("Segoe UI", Font.BOLD, 14));
+        bodyLabel.setFont(new Font("Segoe UI Symbol", Font.BOLD, 14));
         bodyLabel.setForeground(new Color(55, 65, 81));
         bodyLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
         form.add(bodyLabel);
@@ -94,7 +94,7 @@ public class HelpPanel extends JPanel {
         body = new JTextArea(8,40); 
         body.setLineWrap(true);
         body.setWrapStyleWord(true);
-        body.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+        body.setFont(new Font("Segoe UI Symbol", Font.PLAIN, 14));
         body.setBorder(BorderFactory.createCompoundBorder(
             BorderFactory.createLineBorder(new Color(209, 213, 219), 1, true),
             BorderFactory.createEmptyBorder(10, 12, 10, 12)
@@ -108,7 +108,7 @@ public class HelpPanel extends JPanel {
         
         // Send button
         JButton send = new JButton("📤 Kirim Keluhan"); 
-        send.setFont(new Font("Segoe UI", Font.BOLD, 15));
+        send.setFont(new Font("Segoe UI Symbol", Font.BOLD, 15));
         send.setForeground(Color.WHITE);
         send.setBackground(new Color(16, 185, 129));
         send.setBorderPainted(false);

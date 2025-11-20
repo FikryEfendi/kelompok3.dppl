@@ -24,11 +24,11 @@ public class ThankYouPanel extends JPanel {
         
         // Success icon
         JLabel icon = new JLabel("✅");
-        icon.setFont(new Font("Segoe UI", Font.PLAIN, 80));
+        icon.setFont(new Font("Segoe UI Symbol", Font.PLAIN, 80));
         icon.setAlignmentX(Component.CENTER_ALIGNMENT);
         
         JLabel title = new JLabel("Pendaftaran Berhasil!");
-        title.setFont(new Font("Segoe UI", Font.BOLD, 26));
+        title.setFont(new Font("Segoe UI Symbol", Font.BOLD, 26));
         title.setForeground(new Color(6, 78, 59));
         title.setAlignmentX(Component.CENTER_ALIGNMENT);
         
@@ -36,14 +36,14 @@ public class ThankYouPanel extends JPanel {
         message.setEditable(false);
         message.setLineWrap(true);
         message.setWrapStyleWord(true);
-        message.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+        message.setFont(new Font("Segoe UI Symbol", Font.PLAIN, 14));
         message.setForeground(new Color(75, 85, 99));
         message.setBackground(Color.WHITE);
         message.setAlignmentX(Component.CENTER_ALIGNMENT);
         message.setBorder(BorderFactory.createEmptyBorder(10, 0, 10, 0));
         
         JButton homeBtn = new JButton("🏠 Kembali ke Beranda"); 
-        homeBtn.setFont(new Font("Segoe UI", Font.BOLD, 15));
+        homeBtn.setFont(new Font("Segoe UI Symbol", Font.BOLD, 15));
         homeBtn.setForeground(Color.WHITE);
         homeBtn.setBackground(new Color(16, 185, 129));
         homeBtn.setBorderPainted(false);
@@ -63,7 +63,7 @@ public class ThankYouPanel extends JPanel {
         });
         
         JButton statusBtn = new JButton("📊 Lihat Status Pendaftaran");
-        statusBtn.setFont(new Font("Segoe UI", Font.BOLD, 14));
+        statusBtn.setFont(new Font("Segoe UI Symbol", Font.BOLD, 14));
         statusBtn.setForeground(new Color(16, 185, 129));
         statusBtn.setBackground(Color.WHITE);
         statusBtn.setBorder(BorderFactory.createCompoundBorder(

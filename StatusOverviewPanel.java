@@ -1,5 +1,7 @@
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.nio.file.*;
 import java.util.List;
 
@@ -10,6 +12,13 @@ public class StatusOverviewPanel extends JPanel {
     public StatusOverviewPanel(MainWindow win, DataStore store){
         this.win=win; 
         this.store=store;
+        // Inisialisasi awal, layout akan diset di method refresh()
+        setLayout(new BorderLayout());
+        setBackground(Color.WHITE);
+    }
+
+    public void refresh(){ // Tambahkan method refresh untuk memuat ulang
+        this.removeAll();
         setLayout(new BorderLayout());
         setBackground(Color.WHITE);
         
@@ -19,7 +28,7 @@ public class StatusOverviewPanel extends JPanel {
         top.setBorder(BorderFactory.createEmptyBorder(15, 25, 15, 25));
         
         JButton back = new JButton("← Kembali"); 
-        back.setFont(new Font("Segoe UI", Font.BOLD, 13));
+        back.setFont(new Font("Segoe UI Symbol", Font.BOLD, 13));
         back.setForeground(Color.WHITE);
         back.setBackground(new Color(5, 150, 105));
         back.setBorderPainted(false);
@@ -29,12 +38,12 @@ public class StatusOverviewPanel extends JPanel {
         back.addActionListener(e -> win.show("home")); 
         
         JLabel titleLabel = new JLabel("📊 Status Pendaftaran");
-        titleLabel.setFont(new Font("Segoe UI", Font.BOLD, 20));
+        titleLabel.setFont(new Font("Segoe UI Symbol", Font.BOLD, 20));
         titleLabel.setForeground(Color.WHITE);
         
         top.add(back, BorderLayout.WEST);
         top.add(titleLabel, BorderLayout.CENTER);
-        add(top, BorderLayout.NORTH);
+        this.add(top, BorderLayout.NORTH);
 
         // Main content
         JPanel mainContent = new JPanel();
@@ -54,6 +63,7 @@ public class StatusOverviewPanel extends JPanel {
         for(Application a : apps){
             if(a.nim.equals(currentNim)){
                 hasApplications = true;
+                // Kirim objek Application ke createApplicationCard
                 JPanel appCard = createApplicationCard(a);
                 mainContent.add(appCard);
                 mainContent.add(Box.createRigidArea(new Dimension(0, 15)));
@@ -65,7 +75,9 @@ public class StatusOverviewPanel extends JPanel {
             mainContent.add(emptyState);
         }
         
-        add(new JScrollPane(mainContent), BorderLayout.CENTER);
+        this.add(new JScrollPane(mainContent), BorderLayout.CENTER);
+        this.revalidate();
+        this.repaint();
     }
     
     private JPanel createApplicationCard(Application app){
@@ -78,6 +90,26 @@ public class StatusOverviewPanel extends JPanel {
         ));
         card.setAlignmentX(Component.LEFT_ALIGNMENT);
         card.setMaximumSize(new Dimension(Integer.MAX_VALUE, 150));
+        card.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        
+        // --- TAMBAHAN: MOUSE LISTENER UNTUK KLIK KARTU ---
+        card.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                // Panggil method untuk menampilkan detail aplikasi
+                ((StatusDetailPanel)win.getPanel("statusDetail")).loadApplication(app);
+                win.show("statusDetail");
+            }
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                 card.setBackground(new Color(240, 253, 244)); // Highlight on hover
+            }
+            @Override
+            public void mouseExited(MouseEvent e) {
+                 card.setBackground(Color.WHITE);
+            }
+        });
+        // --------------------------------------------------
         
         // Left: Icon
         JPanel leftPanel = new JPanel();
@@ -85,7 +117,7 @@ public class StatusOverviewPanel extends JPanel {
         leftPanel.setBackground(Color.WHITE);
         
         JLabel icon = new JLabel("📋");
-        icon.setFont(new Font("Segoe UI", Font.PLAIN, 48));
+        icon.setFont(new Font("Segoe UI Symbol", Font.PLAIN, 48));
         icon.setAlignmentX(Component.CENTER_ALIGNMENT);
         leftPanel.add(icon);
         
@@ -95,17 +127,17 @@ public class StatusOverviewPanel extends JPanel {
         centerPanel.setBackground(Color.WHITE);
         
         JLabel nameLabel = new JLabel(app.scholarshipName);
-        nameLabel.setFont(new Font("Segoe UI", Font.BOLD, 18));
+        nameLabel.setFont(new Font("Segoe UI Symbol", Font.BOLD, 18));
         nameLabel.setForeground(new Color(6, 78, 59));
         nameLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
         
         JLabel nimLabel = new JLabel("NIM: " + app.nim);
-        nimLabel.setFont(new Font("Segoe UI", Font.PLAIN, 13));
+        nimLabel.setFont(new Font("Segoe UI Symbol", Font.PLAIN, 13));
         nimLabel.setForeground(new Color(107, 114, 128));
         nimLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
         
         JLabel fullNameLabel = new JLabel("Nama: " + app.fullName);
-        fullNameLabel.setFont(new Font("Segoe UI", Font.PLAIN, 13));
+        fullNameLabel.setFont(new Font("Segoe UI Symbol", Font.PLAIN, 13));
         fullNameLabel.setForeground(new Color(107, 114, 128));
         fullNameLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
         
@@ -121,7 +153,7 @@ public class StatusOverviewPanel extends JPanel {
         rightPanel.setBackground(Color.WHITE);
         
         JLabel statusLabel = new JLabel("  " + app.status + "  ");
-        statusLabel.setFont(new Font("Segoe UI", Font.BOLD, 13));
+        statusLabel.setFont(new Font("Segoe UI Symbol", Font.BOLD, 13));
         statusLabel.setForeground(Color.WHITE);
         statusLabel.setOpaque(true);
         statusLabel.setBorder(BorderFactory.createEmptyBorder(8, 15, 8, 15));
@@ -144,7 +176,7 @@ public class StatusOverviewPanel extends JPanel {
         
         // Status description
         JLabel statusDesc = new JLabel(getStatusDescription(app.status));
-        statusDesc.setFont(new Font("Segoe UI", Font.ITALIC, 11));
+        statusDesc.setFont(new Font("Segoe UI Symbol", Font.ITALIC, 11));
         statusDesc.setForeground(new Color(107, 114, 128));
         statusDesc.setAlignmentX(Component.CENTER_ALIGNMENT);
         rightPanel.add(Box.createRigidArea(new Dimension(0, 8)));
@@ -178,21 +210,21 @@ public class StatusOverviewPanel extends JPanel {
         empty.setAlignmentX(Component.LEFT_ALIGNMENT);
         
         JLabel icon = new JLabel("📝");
-        icon.setFont(new Font("Segoe UI", Font.PLAIN, 64));
+        icon.setFont(new Font("Segoe UI Symbol", Font.PLAIN, 64));
         icon.setAlignmentX(Component.CENTER_ALIGNMENT);
         
         JLabel title = new JLabel("Belum Ada Pendaftaran");
-        title.setFont(new Font("Segoe UI", Font.BOLD, 20));
+        title.setFont(new Font("Segoe UI Symbol", Font.BOLD, 20));
         title.setForeground(new Color(6, 78, 59));
         title.setAlignmentX(Component.CENTER_ALIGNMENT);
         
         JLabel desc = new JLabel("Anda belum mendaftar beasiswa apapun");
-        desc.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+        desc.setFont(new Font("Segoe UI Symbol", Font.PLAIN, 14));
         desc.setForeground(new Color(107, 114, 128));
         desc.setAlignmentX(Component.CENTER_ALIGNMENT);
         
         JButton applyBtn = new JButton("📋 Lihat Beasiswa Tersedia");
-        applyBtn.setFont(new Font("Segoe UI", Font.BOLD, 14));
+        applyBtn.setFont(new Font("Segoe UI Symbol", Font.BOLD, 14));
         applyBtn.setForeground(Color.WHITE);
         applyBtn.setBackground(new Color(16, 185, 129));
         applyBtn.setBorderPainted(false);

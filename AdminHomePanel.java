@@ -17,7 +17,7 @@ public class AdminHomePanel extends JPanel {
         topNav.setBorder(BorderFactory.createEmptyBorder(15, 30, 15, 30));
         
         JLabel logo = new JLabel("🎓 Admin Dashboard - Sistem Beasiswa");
-        logo.setFont(new Font("Segoe UI", Font.BOLD, 20));
+        logo.setFont(new Font("Segoe UI Symbol", Font.BOLD, 20));
         logo.setForeground(Color.WHITE);
         
         JPanel navButtons = new JPanel(new FlowLayout(FlowLayout.RIGHT, 15, 0));
@@ -50,12 +50,12 @@ public class AdminHomePanel extends JPanel {
         ));
         
         JLabel welcomeLabel = new JLabel("Selamat Datang, Administrator");
-        welcomeLabel.setFont(new Font("Segoe UI", Font.BOLD, 24));
+        welcomeLabel.setFont(new Font("Segoe UI Symbol", Font.BOLD, 24));
         welcomeLabel.setForeground(new Color(31, 41, 55));
         welcomeLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
         
         JLabel subtitle = new JLabel("Kelola sistem beasiswa mahasiswa dengan efisien");
-        subtitle.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+        subtitle.setFont(new Font("Segoe UI Symbol", Font.PLAIN, 14));
         subtitle.setForeground(new Color(107, 114, 128));
         subtitle.setAlignmentX(Component.LEFT_ALIGNMENT);
         
@@ -83,7 +83,7 @@ public class AdminHomePanel extends JPanel {
         ));
         
         JLabel statsTitle = new JLabel("📈 Statistik Cepat");
-        statsTitle.setFont(new Font("Segoe UI", Font.BOLD, 18));
+        statsTitle.setFont(new Font("Segoe UI Symbol", Font.BOLD, 18));
         statsTitle.setForeground(new Color(31, 41, 55));
         statsTitle.setAlignmentX(Component.LEFT_ALIGNMENT);
         
@@ -92,15 +92,15 @@ public class AdminHomePanel extends JPanel {
         int pendingApps = (int) store.loadApplications().stream().filter(a -> a.status.equals("Pending")).count();
         
         JLabel stat1 = new JLabel("Total Pendaftar: " + totalApps);
-        stat1.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+        stat1.setFont(new Font("Segoe UI Symbol", Font.PLAIN, 14));
         stat1.setAlignmentX(Component.LEFT_ALIGNMENT);
         
         JLabel stat2 = new JLabel("Total User Terdaftar: " + totalUsers);
-        stat2.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+        stat2.setFont(new Font("Segoe UI Symbol", Font.PLAIN, 14));
         stat2.setAlignmentX(Component.LEFT_ALIGNMENT);
         
         JLabel stat3 = new JLabel("Menunggu Verifikasi: " + pendingApps);
-        stat3.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+        stat3.setFont(new Font("Segoe UI Symbol", Font.PLAIN, 14));
         stat3.setAlignmentX(Component.LEFT_ALIGNMENT);
         
         statsPanel.add(statsTitle);
@@ -132,7 +132,7 @@ public class AdminHomePanel extends JPanel {
     
     private JButton createNavButton(String text){
         JButton btn = new JButton(text);
-        btn.setFont(new Font("Segoe UI", Font.BOLD, 13));
+        btn.setFont(new Font("Segoe UI Symbol", Font.BOLD, 13));
         btn.setForeground(Color.WHITE);
         btn.setBackground(new Color(5, 150, 105));
         btn.setBorderPainted(false);
@@ -163,16 +163,16 @@ public class AdminHomePanel extends JPanel {
         card.setCursor(new Cursor(Cursor.HAND_CURSOR));
         
         JLabel iconLabel = new JLabel(icon);
-        iconLabel.setFont(new Font("Segoe UI", Font.PLAIN, 40));
+        iconLabel.setFont(new Font("Segoe UI Symbol", Font.PLAIN, 40));
         iconLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         
         JLabel titleLabel = new JLabel(title);
-        titleLabel.setFont(new Font("Segoe UI", Font.BOLD, 16));
+        titleLabel.setFont(new Font("Segoe UI Symbol", Font.BOLD, 16));
         titleLabel.setForeground(new Color(31, 41, 55));
         titleLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         
         JLabel descLabel = new JLabel("<html><center>" + desc + "</center></html>");
-        descLabel.setFont(new Font("Segoe UI", Font.PLAIN, 12));
+        descLabel.setFont(new Font("Segoe UI Symbol", Font.PLAIN, 12));
         descLabel.setForeground(new Color(107, 114, 128));
         descLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         

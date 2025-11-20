@@ -25,7 +25,7 @@ public class HomePanel extends JPanel {
         topNav.setBorder(BorderFactory.createEmptyBorder(15, 30, 15, 30));
         
         JLabel logo = new JLabel("🎓 Sistem Beasiswa");
-        logo.setFont(new Font("Segoe UI", Font.BOLD, 20));
+        logo.setFont(new Font("Segoe UI Symbol", Font.BOLD, 20));
         logo.setForeground(Color.WHITE);
         
         JPanel navButtons = new JPanel(new FlowLayout(FlowLayout.RIGHT, 15, 0));
@@ -64,12 +64,12 @@ public class HomePanel extends JPanel {
         ));
         
         welcomeLabel = new JLabel("Selamat Datang");
-        welcomeLabel.setFont(new Font("Segoe UI", Font.BOLD, 24));
+        welcomeLabel.setFont(new Font("Segoe UI Symbol", Font.BOLD, 24));
         welcomeLabel.setForeground(new Color(31, 41, 55));
         welcomeLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
         
         JLabel subtitle = new JLabel("NIM: " + currentNim);
-        subtitle.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+        subtitle.setFont(new Font("Segoe UI Symbol", Font.PLAIN, 14));
         subtitle.setForeground(new Color(5, 150, 105)); // Dark green
         subtitle.setAlignmentX(Component.LEFT_ALIGNMENT);
         
@@ -96,7 +96,7 @@ public class HomePanel extends JPanel {
         ));
         
         JLabel recTitle = new JLabel("🌟 Rekomendasi Beasiswa");
-        recTitle.setFont(new Font("Segoe UI", Font.BOLD, 18));
+        recTitle.setFont(new Font("Segoe UI Symbol", Font.BOLD, 18));
         recTitle.setForeground(new Color(6, 78, 59)); // Dark green
         
         JPanel scholarshipList = new JPanel();
@@ -138,7 +138,7 @@ public class HomePanel extends JPanel {
     
     private JButton createNavButton(String text){
         JButton btn = new JButton(text);
-        btn.setFont(new Font("Segoe UI", Font.PLAIN, 13));
+        btn.setFont(new Font("Segoe UI Symbol", Font.PLAIN, 13));
         btn.setForeground(Color.WHITE);
         btn.setBackground(new Color(16, 185, 129));
         btn.setBorderPainted(false);
@@ -161,7 +161,7 @@ public class HomePanel extends JPanel {
     // ===== TAMBAHAN: METHOD UNTUK BUTTON LOGOUT =====
     private JButton createLogoutButton(String text){
         JButton btn = new JButton(text);
-        btn.setFont(new Font("Segoe UI", Font.BOLD, 13));
+        btn.setFont(new Font("Segoe UI Symbol", Font.BOLD, 13));
         btn.setForeground(Color.WHITE);
         btn.setBackground(new Color(220, 38, 38)); // Red color for logout
         btn.setBorderPainted(false);
@@ -240,16 +240,16 @@ public class HomePanel extends JPanel {
         card.setCursor(new Cursor(Cursor.HAND_CURSOR));
         
         JLabel iconLabel = new JLabel(icon);
-        iconLabel.setFont(new Font("Segoe UI", Font.PLAIN, 36));
+        iconLabel.setFont(new Font("Segoe UI Symbol", Font.PLAIN, 36));
         iconLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         
         JLabel titleLabel = new JLabel(title);
-        titleLabel.setFont(new Font("Segoe UI", Font.BOLD, 16));
+        titleLabel.setFont(new Font("Segoe UI Symbol", Font.BOLD, 16));
         titleLabel.setForeground(new Color(6, 78, 59)); // Dark green
         titleLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         
         JLabel descLabel = new JLabel("<html><center>" + desc + "</center></html>");
-        descLabel.setFont(new Font("Segoe UI", Font.PLAIN, 12));
+        descLabel.setFont(new Font("Segoe UI Symbol", Font.PLAIN, 12));
         descLabel.setForeground(new Color(107, 114, 128));
         descLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         
@@ -288,11 +288,11 @@ public class HomePanel extends JPanel {
         item.setBorder(BorderFactory.createEmptyBorder(12, 15, 12, 15));
         
         JLabel bullet = new JLabel("✓");
-        bullet.setFont(new Font("Segoe UI", Font.BOLD, 16));
+        bullet.setFont(new Font("Segoe UI Symbol", Font.BOLD, 16));
         bullet.setForeground(new Color(16, 185, 129)); // Green checkmark
         
         JLabel label = new JLabel(text);
-        label.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+        label.setFont(new Font("Segoe UI Symbol", Font.PLAIN, 14));
         label.setForeground(new Color(55, 65, 81));
         
         item.add(bullet, BorderLayout.WEST);
@@ -305,6 +305,49 @@ public class HomePanel extends JPanel {
         if(s.equals("Bantuan")) win.show("help");
         else if(s.equals("Beranda")) win.show("home");
         else if(s.equals("Daftar Beasiswa")) win.show("list");
-        else if(s.equals("Pengumuman")) JOptionPane.showMessageDialog(this, "Belum ada pengumuman saat ini.", "Pengumuman", JOptionPane.INFORMATION_MESSAGE);
+        else if(s.equals("Pengumuman")) win.show("announcement"); // Panggil method baru
+    }
+
+    // Method baru untuk membaca dan menampilkan pengumuman dari file
+    private void showAnnouncements(){
+        try {
+            java.nio.file.Path path = java.nio.file.Paths.get("announcements.txt");
+            
+            if(java.nio.file.Files.exists(path) && java.nio.file.Files.size(path) > 0){
+                // Membaca semua baris
+                java.util.List<String> lines = java.nio.file.Files.readAllLines(path);
+                
+                if (lines.isEmpty()) {
+                    JOptionPane.showMessageDialog(this, "Belum ada pengumuman saat ini.", "Pengumuman", JOptionPane.INFORMATION_MESSAGE);
+                    return;
+                }
+                
+                StringBuilder sb = new StringBuilder();
+                sb.append("PENGUMUMAN TERBARU:\n");
+                sb.append("========================\n\n");
+                
+                // Tampilkan 3 pengumuman terbaru
+                int limit = Math.min(3, lines.size());
+                for(int i = lines.size() - 1; i >= lines.size() - limit; i--){
+                    String line = lines.get(i);
+                    String[] parts = line.split("\\|");
+                    if(parts.length >= 4){
+                        sb.append("Tanggal: ").append(parts[0]).append("\n");
+                        sb.append("Judul: ").append(parts[1]).append("\n");
+                        sb.append("Status: ").append(parts[3]).append("\n");
+                        sb.append("------------------------\n");
+                    }
+                }
+                sb.append("\nHubungi Admin untuk detail lengkap.");
+                
+                JOptionPane.showMessageDialog(this, sb.toString(), "Pengumuman Sistem", JOptionPane.INFORMATION_MESSAGE);
+                
+            } else {
+                JOptionPane.showMessageDialog(this, "Belum ada pengumuman saat ini.", "Pengumuman", JOptionPane.INFORMATION_MESSAGE);
+            }
+        } catch(Exception e){
+            JOptionPane.showMessageDialog(this, "Error saat memuat pengumuman: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            e.printStackTrace();
+        }
     }
 }

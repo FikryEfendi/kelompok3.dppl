@@ -31,7 +31,7 @@ public class SignupPanel extends JPanel {
         form.setBackground(Color.white);
 
         JLabel title = new JLabel("Welcome newcomer");
-        title.setFont(new Font("Segoe UI", Font.BOLD, 22));
+        title.setFont(new Font("Segoe UI Symbol", Font.BOLD, 22));
         form.add(title);
         form.add(Box.createRigidArea(new Dimension(0, 20)));
 
@@ -69,7 +69,7 @@ public class SignupPanel extends JPanel {
 
         // INFO PASSWORD
         JLabel info = new JLabel("<html><i>Password harus minimal 6 karakter & mengandung angka.</i></html>");
-        info.setFont(new Font("Segoe UI", Font.PLAIN, 11));
+        info.setFont(new Font("Segoe UI Symbol", Font.PLAIN, 11));
         info.setForeground(Color.gray);
         form.add(info);
 
@@ -103,7 +103,7 @@ public class SignupPanel extends JPanel {
     // LABEL STYLE
     private JLabel label(String text){
         JLabel l = new JLabel(text);
-        l.setFont(new Font("Segoe UI", Font.BOLD, 13));
+        l.setFont(new Font("Segoe UI Symbol", Font.BOLD, 13));
         return l;
     }
 
@@ -111,7 +111,7 @@ public class SignupPanel extends JPanel {
     private JTextField field(){
         JTextField f = new JTextField();
         f.setMaximumSize(new Dimension(320, 28));
-        f.setFont(new Font("Segoe UI", Font.PLAIN, 13));
+        f.setFont(new Font("Segoe UI Symbol", Font.PLAIN, 13));
         return f;
     }
 
@@ -119,7 +119,7 @@ public class SignupPanel extends JPanel {
     private JPasswordField passField(){
         JPasswordField f = new JPasswordField();
         f.setMaximumSize(new Dimension(320, 28));
-        f.setFont(new Font("Segoe UI", Font.PLAIN, 13));
+        f.setFont(new Font("Segoe UI Symbol", Font.PLAIN, 13));
         return f;
     }
 

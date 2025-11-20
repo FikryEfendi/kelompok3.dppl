@@ -21,7 +21,7 @@ public class ReportsPanel extends JPanel {
         top.setBorder(BorderFactory.createEmptyBorder(15, 25, 15, 25));
 
         JButton back = new JButton("← Kembali");
-        back.setFont(new Font("Segoe UI", Font.BOLD, 13));
+        back.setFont(new Font("Segoe UI Symbol", Font.BOLD, 13));
         back.setForeground(Color.WHITE);
         back.setBackground(new Color(5, 150, 105));
         back.setBorderPainted(false);
@@ -31,7 +31,7 @@ public class ReportsPanel extends JPanel {
         back.addActionListener(e -> win.show("adminHome"));
 
         JLabel title = new JLabel("📊 Laporan dan Statistik");
-        title.setFont(new Font("Segoe UI", Font.BOLD, 20));
+        title.setFont(new Font("Segoe UI Symbol", Font.BOLD, 20));
         title.setForeground(Color.WHITE);
 
         top.add(back, BorderLayout.WEST);
@@ -93,12 +93,12 @@ public class ReportsPanel extends JPanel {
         ));
 
         JLabel titleLabel = new JLabel(title);
-        titleLabel.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+        titleLabel.setFont(new Font("Segoe UI Symbol", Font.PLAIN, 14));
         titleLabel.setForeground(new Color(107, 114, 128));
         titleLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
 
         JLabel valueLabel = new JLabel(value);
-        valueLabel.setFont(new Font("Segoe UI", Font.BOLD, 32));
+        valueLabel.setFont(new Font("Segoe UI Symbol", Font.BOLD, 32));
         valueLabel.setForeground(color);
         valueLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
 
@@ -121,17 +121,20 @@ public class ReportsPanel extends JPanel {
         btn.setFocusPainted(false);
 
         JLabel titleLabel = new JLabel(title);
-        titleLabel.setFont(new Font("Segoe UI", Font.BOLD, 14));
+        titleLabel.setFont(new Font("Segoe UI Symbol", Font.BOLD, 14));
         titleLabel.setForeground(new Color(31, 41, 55));
 
-        JLabel descLabel = new JLabel(desc);
-        descLabel.setFont(new Font("Segoe UI", Font.PLAIN, 12));
+        // MENGGUNAKAN HTML UNTUK MEMASTIKAN LINE WRAP DAN TINGGI CUKUP
+        JLabel descLabel = new JLabel("<html><p style='width: 150px;'>" + desc + "</p></html>"); 
+        descLabel.setFont(new Font("Segoe UI Symbol", Font.PLAIN, 12));
         descLabel.setForeground(new Color(107, 114, 128));
 
         JPanel textPanel = new JPanel();
         textPanel.setLayout(new BoxLayout(textPanel, BoxLayout.Y_AXIS));
         textPanel.setBackground(Color.WHITE);
+        // TAMBAHKAN RUANG VERTIKAL ANTARA JUDUL DAN DESKRIPSI
         textPanel.add(titleLabel);
+        textPanel.add(Box.createRigidArea(new Dimension(0, 3))); // Ruang 3px
         textPanel.add(descLabel);
 
         btn.add(textPanel, BorderLayout.CENTER);

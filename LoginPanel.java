@@ -43,12 +43,12 @@ public class LoginPanel extends JPanel {
         form.setBorder(BorderFactory.createEmptyBorder(50, 60, 50, 60));
 
         JLabel title = new JLabel("Selamat Datang Kembali");
-        title.setFont(new Font("Segoe UI", Font.BOLD, 28));
+        title.setFont(new Font("Segoe UI Symbol", Font.BOLD, 28));
         title.setForeground(new Color(31, 41, 55));
         title.setAlignmentX(Component.LEFT_ALIGNMENT);
         
         JLabel subtitle = new JLabel("Masuk ke akun Anda untuk melanjutkan");
-        subtitle.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+        subtitle.setFont(new Font("Segoe UI Symbol", Font.PLAIN, 14));
         subtitle.setForeground(new Color(107, 114, 128));
         subtitle.setAlignmentX(Component.LEFT_ALIGNMENT);
         
@@ -59,7 +59,7 @@ public class LoginPanel extends JPanel {
         
         // NIM Field
         JLabel nimLabel = new JLabel("NIM");
-        nimLabel.setFont(new Font("Segoe UI", Font.BOLD, 13));
+        nimLabel.setFont(new Font("Segoe UI Symbol", Font.BOLD, 13));
         nimLabel.setForeground(new Color(55, 65, 81));
         nimLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
         form.add(nimLabel);
@@ -67,7 +67,7 @@ public class LoginPanel extends JPanel {
         
         nimField = new JTextField();
         nimField.setMaximumSize(new Dimension(350, 45));
-        nimField.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+        nimField.setFont(new Font("Segoe UI Symbol", Font.PLAIN, 14));
         nimField.setBorder(BorderFactory.createCompoundBorder(
             BorderFactory.createLineBorder(new Color(209, 213, 219), 1, true),
             BorderFactory.createEmptyBorder(10, 15, 10, 15)
@@ -78,7 +78,7 @@ public class LoginPanel extends JPanel {
         
         // Password Field
         JLabel passLabel = new JLabel("Password");
-        passLabel.setFont(new Font("Segoe UI", Font.BOLD, 13));
+        passLabel.setFont(new Font("Segoe UI Symbol", Font.BOLD, 13));
         passLabel.setForeground(new Color(55, 65, 81));
         passLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
         form.add(passLabel);
@@ -86,7 +86,7 @@ public class LoginPanel extends JPanel {
         
         passField = new JPasswordField();
         passField.setMaximumSize(new Dimension(350, 45));
-        passField.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+        passField.setFont(new Font("Segoe UI Symbol", Font.PLAIN, 14));
         passField.setBorder(BorderFactory.createCompoundBorder(
             BorderFactory.createLineBorder(new Color(209, 213, 219), 1, true),
             BorderFactory.createEmptyBorder(10, 15, 10, 15)
@@ -114,7 +114,7 @@ public class LoginPanel extends JPanel {
         JSeparator sep1 = new JSeparator();
         JSeparator sep2 = new JSeparator();
         JLabel orLabel = new JLabel("atau");
-        orLabel.setFont(new Font("Segoe UI", Font.PLAIN, 12));
+        orLabel.setFont(new Font("Segoe UI Symbol", Font.PLAIN, 12));
         orLabel.setForeground(new Color(107, 114, 128));
         
         divider.add(sep1);
@@ -144,7 +144,7 @@ public class LoginPanel extends JPanel {
 
     private JButton createStyledButton(String text, Color bg, Color fg) {
         JButton btn = new JButton(text);
-        btn.setFont(new Font("Segoe UI", Font.BOLD, 14));
+        btn.setFont(new Font("Segoe UI Symbol", Font.BOLD, 14));
         btn.setBackground(bg);
         btn.setForeground(fg);
         btn.setFocusPainted(false);

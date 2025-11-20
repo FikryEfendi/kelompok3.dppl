@@ -8,6 +8,9 @@ public class MainWindow extends JFrame {
 
     private ScholarshipDetailPanel detailPanel;
     private ApplicationFormPanel applyPanel;
+    
+    // Variabel untuk menyimpan instance panel yang akan di-refresh
+    private StatusOverviewPanel statusPanel;
 
     public MainWindow() {
         setTitle("Sistem Beasiswa Universitas Riau");
@@ -33,6 +36,9 @@ public class MainWindow extends JFrame {
         StatusDetailPanel statusDetail = new StatusDetailPanel(this, store);
         CongratulationsPanel congrats = new CongratulationsPanel(this, store);
         
+        // TAMBAHAN: PANEL PENGUMUMAN BARU
+        AnnouncementPanel announcement = new AnnouncementPanel(this, store);
+        
         // Admin panels
         AdminHomePanel adminHome = new AdminHomePanel(this, store);
         ManageScholarshipsPanel manageSchol = new ManageScholarshipsPanel(this, store);
@@ -42,6 +48,9 @@ public class MainWindow extends JFrame {
 
         detailPanel = new ScholarshipDetailPanel(this, store);
         applyPanel = new ApplicationFormPanel(this, store);
+        
+        // Simpan referensi ke statusPanel
+        statusPanel = status;
 
         // Add all panels to cards
         cards.add(login, "login");
@@ -56,6 +65,9 @@ public class MainWindow extends JFrame {
         cards.add(status, "status");
         cards.add(statusDetail, "statusDetail");
         cards.add(congrats, "congrats");
+        
+        // TAMBAHAN: PANEL PENGUMUMAN BARU
+        cards.add(announcement, "announcement");
         
         // Admin panels
         cards.add(adminHome, "adminHome");
@@ -81,12 +93,19 @@ public class MainWindow extends JFrame {
     }
 
     public void show(String name) {
+        // --- TAMBAHAN: REFRESH PANEL STATUS SAAT AKAN DITAMPILKAN ---
+        if (name.equals("status") && statusPanel != null) {
+            statusPanel.refresh();
+        }
+        // -------------------------------------------------------------
+        
         cardLayout.show(cards, name);
     }
     
     public JPanel getPanel(String name) {
+        // Perbaikan pada getPanel agar bisa mengambil instance panel dengan benar
         for(Component comp : cards.getComponents()){
-            if(comp.getName() != null && comp.getName().equals(name)){
+            if (comp.getName() != null && comp.getName().equals(name)) {
                 return (JPanel) comp;
             }
         }

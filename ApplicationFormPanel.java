@@ -1,7 +1,9 @@
 import java.awt.*;
+import java.io.File; // Import File
 import java.nio.file.*;
 import java.util.List;
 import javax.swing.*;
+import javax.swing.filechooser.FileNameExtensionFilter; // Import file chooser filter
 
 public class ApplicationFormPanel extends JPanel {
     MainWindow win; 
@@ -23,7 +25,7 @@ public class ApplicationFormPanel extends JPanel {
         top.setBorder(BorderFactory.createEmptyBorder(15, 25, 15, 25));
         
         JButton back = new JButton("← Kembali"); 
-        back.setFont(new Font("Segoe UI", Font.BOLD, 13));
+        back.setFont(new Font("Segoe UI Symbol", Font.BOLD, 13));
         back.setForeground(Color.WHITE);
         back.setBackground(new Color(5, 150, 105));
         back.setBorderPainted(false);
@@ -33,7 +35,7 @@ public class ApplicationFormPanel extends JPanel {
         back.addActionListener(e -> win.show("detail")); 
         
         JLabel titleLabel = new JLabel("📝 Form Pendaftaran Beasiswa");
-        titleLabel.setFont(new Font("Segoe UI", Font.BOLD, 20));
+        titleLabel.setFont(new Font("Segoe UI Symbol", Font.BOLD, 20));
         titleLabel.setForeground(Color.WHITE);
         
         top.add(back, BorderLayout.WEST);
@@ -56,14 +58,14 @@ public class ApplicationFormPanel extends JPanel {
         form.setAlignmentX(Component.LEFT_ALIGNMENT);
         
         JLabel formTitle = new JLabel("Lengkapi Data Pendaftaran");
-        formTitle.setFont(new Font("Segoe UI", Font.BOLD, 20));
+        formTitle.setFont(new Font("Segoe UI Symbol", Font.BOLD, 20));
         formTitle.setForeground(new Color(6, 78, 59));
         formTitle.setAlignmentX(Component.LEFT_ALIGNMENT);
         form.add(formTitle);
         form.add(Box.createRigidArea(new Dimension(0,5)));
         
         JLabel formDesc = new JLabel("Pastikan semua data yang Anda masukkan benar dan lengkap.");
-        formDesc.setFont(new Font("Segoe UI", Font.PLAIN, 13));
+        formDesc.setFont(new Font("Segoe UI Symbol", Font.PLAIN, 13));
         formDesc.setForeground(new Color(107, 114, 128));
         formDesc.setAlignmentX(Component.LEFT_ALIGNMENT);
         form.add(formDesc);
@@ -73,7 +75,7 @@ public class ApplicationFormPanel extends JPanel {
         form.add(createLabel("Pilih Beasiswa")); 
         scholarshipCombo = new JComboBox<>();
         scholarshipCombo.setMaximumSize(new Dimension(Integer.MAX_VALUE, 40));
-        scholarshipCombo.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+        scholarshipCombo.setFont(new Font("Segoe UI Symbol", Font.PLAIN, 14));
         scholarshipCombo.setBackground(Color.WHITE);
         scholarshipCombo.setBorder(BorderFactory.createCompoundBorder(
             BorderFactory.createLineBorder(new Color(209, 213, 219), 1, true),
@@ -125,14 +127,14 @@ public class ApplicationFormPanel extends JPanel {
         // Photo
         form.add(createLabel("Pas Foto"));
         photoLabel = new JLabel("Belum ada foto dipilih"); 
-        photoLabel.setFont(new Font("Segoe UI", Font.ITALIC, 12));
+        photoLabel.setFont(new Font("Segoe UI Symbol", Font.ITALIC, 12));
         photoLabel.setForeground(new Color(107, 114, 128));
         photoLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
         form.add(photoLabel);
         form.add(Box.createRigidArea(new Dimension(0,8)));
         
         JButton upload = new JButton("📁 Pilih File Foto"); 
-        upload.setFont(new Font("Segoe UI", Font.BOLD, 13));
+        upload.setFont(new Font("Segoe UI Symbol", Font.BOLD, 13));
         upload.setForeground(new Color(16, 185, 129));
         upload.setBackground(Color.WHITE);
         upload.setBorder(BorderFactory.createCompoundBorder(
@@ -142,20 +144,13 @@ public class ApplicationFormPanel extends JPanel {
         upload.setFocusPainted(false);
         upload.setCursor(new Cursor(Cursor.HAND_CURSOR));
         upload.setAlignmentX(Component.LEFT_ALIGNMENT);
-        upload.addActionListener(e -> {
-            String p = JOptionPane.showInputDialog(this, "Masukkan path file foto (contoh: C:/Users/nama/Documents/foto.jpg):");
-            if(p!=null && !p.trim().isEmpty()){ 
-                photoPath = p.trim(); 
-                photoLabel.setText("✅ " + photoPath); 
-                photoLabel.setForeground(new Color(16, 185, 129));
-            }
-        });
+        upload.addActionListener(e -> choosePhotoFile()); // Ganti aksi ke method baru
         form.add(upload);
         form.add(Box.createRigidArea(new Dimension(0,25)));
         
         // Submit button
         JButton submit = new JButton("📤 Kirim Pendaftaran"); 
-        submit.setFont(new Font("Segoe UI", Font.BOLD, 15));
+        submit.setFont(new Font("Segoe UI Symbol", Font.BOLD, 15));
         submit.setForeground(Color.WHITE);
         submit.setBackground(new Color(16, 185, 129));
         submit.setBorderPainted(false);
@@ -180,9 +175,37 @@ public class ApplicationFormPanel extends JPanel {
         add(new JScrollPane(mainContent), BorderLayout.CENTER);
     }
     
+    // --- METHOD BARU UNTUK MEMILIH FOTO MENGGUNAKAN JFILECHOOSER ---
+    private void choosePhotoFile(){
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setDialogTitle("Pilih Pas Foto");
+        
+        // Hanya izinkan file gambar
+        FileNameExtensionFilter filter = new FileNameExtensionFilter(
+            "File Gambar (JPG, PNG, GIF)", "jpg", "jpeg", "png", "gif");
+        fileChooser.setFileFilter(filter);
+        
+        int result = fileChooser.showOpenDialog(this);
+        
+        if(result == JFileChooser.APPROVE_OPTION){
+            File selectedFile = fileChooser.getSelectedFile();
+            if(selectedFile.exists()){
+                photoPath = selectedFile.getAbsolutePath();
+                photoLabel.setText("✅ " + selectedFile.getName());
+                photoLabel.setForeground(new Color(16, 185, 129));
+            } else {
+                JOptionPane.showMessageDialog(this, "File tidak ditemukan!", "Error", JOptionPane.ERROR_MESSAGE);
+                photoPath = "";
+                photoLabel.setText("Belum ada foto dipilih");
+                photoLabel.setForeground(new Color(107, 114, 128));
+            }
+        }
+    }
+    // -----------------------------------------------------------------
+    
     private JLabel createLabel(String text){
         JLabel label = new JLabel(text);
-        label.setFont(new Font("Segoe UI", Font.BOLD, 14));
+        label.setFont(new Font("Segoe UI Symbol", Font.BOLD, 14));
         label.setForeground(new Color(55, 65, 81));
         label.setAlignmentX(Component.LEFT_ALIGNMENT);
         return label;
@@ -191,7 +214,7 @@ public class ApplicationFormPanel extends JPanel {
     private JTextField createTextField(){
         JTextField field = new JTextField();
         field.setMaximumSize(new Dimension(Integer.MAX_VALUE, 40));
-        field.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+        field.setFont(new Font("Segoe UI Symbol", Font.PLAIN, 14));
         field.setBorder(BorderFactory.createCompoundBorder(
             BorderFactory.createLineBorder(new Color(209, 213, 219), 1, true),
             BorderFactory.createEmptyBorder(8, 12, 8, 12)
@@ -231,6 +254,7 @@ public class ApplicationFormPanel extends JPanel {
                 return;
             }
             
+            // Perbaikan validasi: Pastikan path foto tidak kosong
             if(photoPath.isEmpty()){
                 JOptionPane.showMessageDialog(this, "Upload pas foto terlebih dahulu!");
                 return;
@@ -247,11 +271,19 @@ public class ApplicationFormPanel extends JPanel {
             a.status = "Pending";
             
             List<Application> apps = store.loadApplications();
+            
+            // Cek duplikasi: tidak boleh ada dua aplikasi dengan NIM dan nama beasiswa yang sama
+            boolean exists = apps.stream().anyMatch(app -> app.nim.equals(nim) && app.scholarshipName.equals(selectedScholarship));
+            if(exists){
+                 JOptionPane.showMessageDialog(this, "Anda sudah mendaftar untuk beasiswa ini!");
+                 return;
+            }
+            
             apps.add(a);
             store.saveApplications(apps);
             
             // Clear form
-            scholarshipCombo.setSelectedIndex(0);
+            if(scholarshipCombo.getItemCount() > 0) scholarshipCombo.setSelectedIndex(0);
             fullName.setText("");
             ttl.setText("");
             nik.setText("");
@@ -259,6 +291,12 @@ public class ApplicationFormPanel extends JPanel {
             photoPath = "";
             photoLabel.setText("Belum ada foto dipilih");
             photoLabel.setForeground(new Color(107, 114, 128));
+            
+            // Hapus file selected_scholarship.txt setelah submit berhasil
+            Path selectedPath = Paths.get("selected_scholarship.txt");
+            if(Files.exists(selectedPath)){
+                Files.delete(selectedPath);
+            }
             
             win.show("thanks");
         } catch(Exception e){ 

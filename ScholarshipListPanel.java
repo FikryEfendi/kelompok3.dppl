@@ -19,7 +19,7 @@ public class ScholarshipListPanel extends JPanel {
         top.setBorder(BorderFactory.createEmptyBorder(15, 25, 15, 25));
         
         JButton back = new JButton("← Kembali"); 
-        back.setFont(new Font("Segoe UI", Font.BOLD, 13));
+        back.setFont(new Font("Segoe UI Symbol", Font.BOLD, 13));
         back.setForeground(Color.WHITE);
         back.setBackground(new Color(5, 150, 105));
         back.setBorderPainted(false);
@@ -29,7 +29,7 @@ public class ScholarshipListPanel extends JPanel {
         back.addActionListener(e -> win.show("home")); 
         
         JLabel title = new JLabel("📋 Daftar Beasiswa Tersedia");
-        title.setFont(new Font("Segoe UI", Font.BOLD, 20));
+        title.setFont(new Font("Segoe UI Symbol", Font.BOLD, 20));
         title.setForeground(Color.WHITE);
         
         top.add(back, BorderLayout.WEST);
@@ -62,7 +62,7 @@ public class ScholarshipListPanel extends JPanel {
             leftPanel.setBackground(Color.WHITE);
             
             JLabel icon = new JLabel("🎓");
-            icon.setFont(new Font("Segoe UI", Font.PLAIN, 48));
+            icon.setFont(new Font("Segoe UI Symbol", Font.PLAIN, 48));
             icon.setAlignmentX(Component.CENTER_ALIGNMENT);
             leftPanel.add(icon);
             
@@ -72,12 +72,12 @@ public class ScholarshipListPanel extends JPanel {
             contentPanel.setBackground(Color.WHITE);
             
             JLabel titleLabel = new JLabel(sch.name);
-            titleLabel.setFont(new Font("Segoe UI", Font.BOLD, 18));
+            titleLabel.setFont(new Font("Segoe UI Symbol", Font.BOLD, 18));
             titleLabel.setForeground(new Color(6, 78, 59));
             titleLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
             
             JLabel descLabel = new JLabel("<html>" + sch.description + "</html>");
-            descLabel.setFont(new Font("Segoe UI", Font.PLAIN, 13));
+            descLabel.setFont(new Font("Segoe UI Symbol", Font.PLAIN, 13));
             descLabel.setForeground(new Color(75, 85, 99));
             descLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
             
@@ -85,11 +85,11 @@ public class ScholarshipListPanel extends JPanel {
             infoPanel.setBackground(Color.WHITE);
             
             JLabel quotaLabel = new JLabel("📊 Kuota: " + sch.quota);
-            quotaLabel.setFont(new Font("Segoe UI", Font.PLAIN, 12));
+            quotaLabel.setFont(new Font("Segoe UI Symbol", Font.PLAIN, 12));
             quotaLabel.setForeground(new Color(107, 114, 128));
             
             JLabel deadlineLabel = new JLabel("📅 Deadline: " + sch.deadline);
-            deadlineLabel.setFont(new Font("Segoe UI", Font.PLAIN, 12));
+            deadlineLabel.setFont(new Font("Segoe UI Symbol", Font.PLAIN, 12));
             deadlineLabel.setForeground(new Color(107, 114, 128));
             
             infoPanel.add(quotaLabel);
@@ -107,7 +107,7 @@ public class ScholarshipListPanel extends JPanel {
             rightPanel.setBackground(Color.WHITE);
             
             JButton detailBtn = new JButton("Lihat Detail"); 
-            detailBtn.setFont(new Font("Segoe UI", Font.BOLD, 13));
+            detailBtn.setFont(new Font("Segoe UI Symbol", Font.BOLD, 13));
             detailBtn.setForeground(Color.WHITE);
             detailBtn.setBackground(new Color(16, 185, 129));
             detailBtn.setBorderPainted(false);
@@ -144,7 +144,7 @@ public class ScholarshipListPanel extends JPanel {
         
         if(scholarships.isEmpty() || scholarships.stream().noneMatch(s -> s.status.equals("Active"))){
             JLabel noData = new JLabel("Belum ada beasiswa tersedia saat ini");
-            noData.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+            noData.setFont(new Font("Segoe UI Symbol", Font.PLAIN, 14));
             noData.setForeground(new Color(107, 114, 128));
             noData.setAlignmentX(Component.CENTER_ALIGNMENT);
             mainContent.add(Box.createVerticalGlue());

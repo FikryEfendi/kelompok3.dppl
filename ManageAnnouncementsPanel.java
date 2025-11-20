@@ -23,7 +23,7 @@ public class ManageAnnouncementsPanel extends JPanel {
         top.setBorder(BorderFactory.createEmptyBorder(15, 25, 15, 25));
 
         JButton back = new JButton("← Kembali");
-        back.setFont(new Font("Segoe UI", Font.BOLD, 13));
+        back.setFont(new Font("Segoe UI Symbol", Font.BOLD, 13));
         back.setForeground(Color.WHITE);
         back.setBackground(new Color(5, 150, 105));
         back.setBorderPainted(false);
@@ -33,7 +33,7 @@ public class ManageAnnouncementsPanel extends JPanel {
         back.addActionListener(e -> win.show("adminHome"));
 
         JLabel title = new JLabel("📢 Kelola Pengumuman");
-        title.setFont(new Font("Segoe UI", Font.BOLD, 20));
+        title.setFont(new Font("Segoe UI Symbol", Font.BOLD, 20));
         title.setForeground(Color.WHITE);
 
         top.add(back, BorderLayout.WEST);
@@ -79,9 +79,9 @@ public class ManageAnnouncementsPanel extends JPanel {
             }
         };
         table = new JTable(model);
-        table.setFont(new Font("Segoe UI", Font.PLAIN, 13));
+        table.setFont(new Font("Segoe UI Symbol", Font.PLAIN, 13));
         table.setRowHeight(35);
-        table.getTableHeader().setFont(new Font("Segoe UI", Font.BOLD, 13));
+        table.getTableHeader().setFont(new Font("Segoe UI Symbol", Font.BOLD, 13));
         table.getTableHeader().setBackground(new Color(240, 253, 244));
         table.getTableHeader().setForeground(new Color(31, 41, 55));
         table.setSelectionBackground(new Color(209, 250, 229));
@@ -101,7 +101,7 @@ public class ManageAnnouncementsPanel extends JPanel {
 
     private JButton createActionButton(String text){
         JButton btn = new JButton(text);
-        btn.setFont(new Font("Segoe UI", Font.BOLD, 13));
+        btn.setFont(new Font("Segoe UI Symbol", Font.BOLD, 13));
         btn.setForeground(Color.WHITE);
         btn.setBackground(new Color(16, 185, 129));
         btn.setBorderPainted(false);
@@ -137,8 +137,10 @@ public class ManageAnnouncementsPanel extends JPanel {
                 List<String> lines = Files.readAllLines(announcePath);
                 for(String line : lines){
                     String[] parts = line.split("\\|");
-                    if(parts.length >= 4){
-                        model.addRow(new Object[]{parts[0], parts[1], parts[2], parts[3]});
+                    // PERUBAHAN: Memperbarui pengecekan panjang array
+                    if(parts.length >= 4){ // Cukup 4 untuk data dasar
+                        // Kolom baru untuk Path Detail tidak perlu ditampilkan di tabel, hanya disimpan di file
+                        model.addRow(new Object[]{parts[0], parts[1], parts[2], parts[3]}); 
                     }
                 }
             }
@@ -180,7 +182,10 @@ public class ManageAnnouncementsPanel extends JPanel {
         if(confirm == JOptionPane.YES_OPTION){
             try {
                 String date = new java.text.SimpleDateFormat("dd/MM/yyyy HH:mm").format(new Date());
-                String announcement = date + "|Pengumuman Hasil Seleksi Beasiswa|Hasil Seleksi|Published\n";
+                String detailFilename = "announcement_detail_" + System.currentTimeMillis() + ".txt"; // Simpan nama file detail
+                
+                // PERUBAHAN: Menyimpan path detail di baris pengumuman
+                String announcement = date + "|Pengumuman Hasil Seleksi Beasiswa|Hasil Seleksi|Published|" + detailFilename + "\n";
                 
                 Path path = Paths.get("announcements.txt");
                 if(!Files.exists(path)){
@@ -189,8 +194,7 @@ public class ManageAnnouncementsPanel extends JPanel {
                 Files.write(path, announcement.getBytes(), java.nio.file.StandardOpenOption.APPEND);
                 
                 // Save detail
-                Files.write(Paths.get("announcement_detail_" + System.currentTimeMillis() + ".txt"), 
-                    sb.toString().getBytes());
+                Files.write(Paths.get(detailFilename), sb.toString().getBytes());
 
                 loadData();
                 JOptionPane.showMessageDialog(this, "Pengumuman berhasil dipublikasikan!");
@@ -212,16 +216,16 @@ public class ManageAnnouncementsPanel extends JPanel {
         form.setBackground(Color.WHITE);
 
         JLabel titleLabel = new JLabel("Judul Pengumuman:");
-        titleLabel.setFont(new Font("Segoe UI", Font.BOLD, 13));
+        titleLabel.setFont(new Font("Segoe UI Symbol", Font.BOLD, 13));
         JTextField titleField = new JTextField();
         titleField.setMaximumSize(new Dimension(Integer.MAX_VALUE, 35));
 
         JLabel contentLabel = new JLabel("Isi Pengumuman:");
-        contentLabel.setFont(new Font("Segoe UI", Font.BOLD, 13));
+        contentLabel.setFont(new Font("Segoe UI Symbol", Font.BOLD, 13));
         JTextArea contentArea = new JTextArea(8, 40);
         contentArea.setLineWrap(true);
         contentArea.setWrapStyleWord(true);
-        contentArea.setFont(new Font("Segoe UI", Font.PLAIN, 13));
+        contentArea.setFont(new Font("Segoe UI Symbol", Font.PLAIN, 13));
         JScrollPane scrollPane = new JScrollPane(contentArea);
 
         form.add(titleLabel);
@@ -238,7 +242,7 @@ public class ManageAnnouncementsPanel extends JPanel {
         JButton publishBtn = new JButton("Publikasikan");
         publishBtn.setBackground(new Color(16, 185, 129));
         publishBtn.setForeground(Color.WHITE);
-        publishBtn.setFont(new Font("Segoe UI", Font.BOLD, 13));
+        publishBtn.setFont(new Font("Segoe UI Symbol", Font.BOLD, 13));
         publishBtn.addActionListener(e -> {
             String title = titleField.getText().trim();
             String content = contentArea.getText().trim();
@@ -250,7 +254,10 @@ public class ManageAnnouncementsPanel extends JPanel {
 
             try {
                 String date = new java.text.SimpleDateFormat("dd/MM/yyyy HH:mm").format(new Date());
-                String announcement = date + "|" + title + "|Custom|Published\n";
+                String detailFilename = "announcement_detail_" + System.currentTimeMillis() + ".txt";
+                
+                // PERUBAHAN: Menyimpan path detail di baris pengumuman
+                String announcement = date + "|" + title + "|Custom|Published|" + detailFilename + "\n";
                 
                 Path path = Paths.get("announcements.txt");
                 if(!Files.exists(path)){
@@ -258,8 +265,7 @@ public class ManageAnnouncementsPanel extends JPanel {
                 }
                 Files.write(path, announcement.getBytes(), java.nio.file.StandardOpenOption.APPEND);
                 
-                Files.write(Paths.get("announcement_detail_" + System.currentTimeMillis() + ".txt"), 
-                    content.getBytes());
+                Files.write(Paths.get(detailFilename), content.getBytes());
 
                 loadData();
                 dialog.dispose();
@@ -270,7 +276,7 @@ public class ManageAnnouncementsPanel extends JPanel {
         });
 
         JButton cancelBtn = new JButton("Batal");
-        cancelBtn.setFont(new Font("Segoe UI", Font.BOLD, 13));
+        cancelBtn.setFont(new Font("Segoe UI Symbol", Font.BOLD, 13));
         cancelBtn.addActionListener(e -> dialog.dispose());
 
         btnPanel.add(publishBtn);
@@ -289,7 +295,7 @@ public class ManageAnnouncementsPanel extends JPanel {
         }
 
         String title = (String) model.getValueAt(row, 1);
-        JOptionPane.showMessageDialog(this, "Detail pengumuman: " + title);
+        JOptionPane.showMessageDialog(this, "Detail pengumuman: " + title + "\nSilakan cek file 'announcement_detail_[timestamp].txt' di folder proyek.");
     }
 
     private void deleteAnnouncement(){
