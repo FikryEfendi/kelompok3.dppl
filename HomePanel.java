@@ -40,6 +40,12 @@ public class HomePanel extends JPanel {
             navButtons.add(btn);
         }
         
+        // ===== TAMBAHAN: BUTTON LOGOUT =====
+        JButton logoutBtn = createLogoutButton("🚪 Logout");
+        logoutBtn.addActionListener(e -> handleLogout());
+        navButtons.add(logoutBtn);
+        // ===================================
+        
         topNav.add(logo, BorderLayout.WEST);
         topNav.add(navButtons, BorderLayout.EAST);
         
@@ -151,6 +157,77 @@ public class HomePanel extends JPanel {
         
         return btn;
     }
+    
+    // ===== TAMBAHAN: METHOD UNTUK BUTTON LOGOUT =====
+    private JButton createLogoutButton(String text){
+        JButton btn = new JButton(text);
+        btn.setFont(new Font("Segoe UI", Font.BOLD, 13));
+        btn.setForeground(Color.WHITE);
+        btn.setBackground(new Color(220, 38, 38)); // Red color for logout
+        btn.setBorderPainted(false);
+        btn.setFocusPainted(false);
+        btn.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        btn.setBorder(BorderFactory.createEmptyBorder(8, 20, 8, 20));
+        
+        btn.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                btn.setBackground(new Color(185, 28, 28)); // Darker red on hover
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                btn.setBackground(new Color(220, 38, 38));
+            }
+        });
+        
+        return btn;
+    }
+    
+    // ===== TAMBAHAN: METHOD HANDLE LOGOUT =====
+    private void handleLogout(){
+        int confirm = JOptionPane.showConfirmDialog(
+            this, 
+            "Apakah Anda yakin ingin logout?", 
+            "Konfirmasi Logout", 
+            JOptionPane.YES_NO_OPTION,
+            JOptionPane.QUESTION_MESSAGE
+        );
+        
+        if(confirm == JOptionPane.YES_OPTION){
+            try {
+                // Hapus file current_nim.txt
+                Path nimPath = Paths.get("current_nim.txt");
+                if(Files.exists(nimPath)){
+                    Files.delete(nimPath);
+                }
+                
+                // Hapus file selected_scholarship.txt jika ada
+                Path selectedPath = Paths.get("selected_scholarship.txt");
+                if(Files.exists(selectedPath)){
+                    Files.delete(selectedPath);
+                }
+                
+                // Kembali ke halaman login
+                win.show("login");
+                
+                // Optional: Tampilkan pesan logout berhasil
+                JOptionPane.showMessageDialog(
+                    this, 
+                    "Anda telah berhasil logout!", 
+                    "Logout Berhasil", 
+                    JOptionPane.INFORMATION_MESSAGE
+                );
+                
+            } catch(Exception e){
+                e.printStackTrace();
+                JOptionPane.showMessageDialog(
+                    this, 
+                    "Error saat logout: " + e.getMessage(), 
+                    "Error", 
+                    JOptionPane.ERROR_MESSAGE
+                );
+            }
+        }
+    }
+    // ================================================
     
     private JPanel createActionCard(String icon, String title, String desc, Runnable action){
         JPanel card = new JPanel();

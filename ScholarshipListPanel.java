@@ -119,7 +119,7 @@ public class ScholarshipListPanel extends JPanel {
             final String scholarshipId = sch.id;
             detailBtn.addActionListener(e -> {
                 selectedScholarshipId = scholarshipId;
-                ((ScholarshipDetailPanel)win.getPanel("detail")).loadScholarship(scholarshipId);
+                win.getDetailPanel().loadScholarship(scholarshipId);
                 win.show("detail");
             });
             

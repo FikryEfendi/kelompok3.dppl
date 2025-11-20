@@ -6,6 +6,9 @@ public class MainWindow extends JFrame {
     JPanel cards = new JPanel(cardLayout);
     DataStore store;
 
+    private ScholarshipDetailPanel detailPanel;
+    private ApplicationFormPanel applyPanel;
+
     public MainWindow() {
         setTitle("Sistem Beasiswa Universitas Riau");
         setSize(1000,650);
@@ -37,6 +40,9 @@ public class MainWindow extends JFrame {
         ManageAnnouncementsPanel manageAnnounce = new ManageAnnouncementsPanel(this, store);
         ReportsPanel reports = new ReportsPanel(this, store);
 
+        detailPanel = new ScholarshipDetailPanel(this, store);
+        applyPanel = new ApplicationFormPanel(this, store);
+
         // Add all panels to cards
         cards.add(login, "login");
         cards.add(signup, "signup");
@@ -58,9 +64,20 @@ public class MainWindow extends JFrame {
         cards.add(manageAnnounce, "manageAnnouncements");
         cards.add(reports, "reports");
 
+        cards.add(detailPanel, "detail");
+        cards.add(applyPanel, "apply");
+        
         add(cards);
         // Start at login
         show("login");
+    }
+
+    public ScholarshipDetailPanel getDetailPanel() {
+        return detailPanel;
+    }
+    
+    public ApplicationFormPanel getApplyPanel() {
+        return applyPanel;
     }
 
     public void show(String name) {
