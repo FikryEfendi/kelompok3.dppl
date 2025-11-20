@@ -66,4 +66,13 @@ public class MainWindow extends JFrame {
     public void show(String name) {
         cardLayout.show(cards, name);
     }
+    
+    public JPanel getPanel(String name) {
+        for(Component comp : cards.getComponents()){
+            if(comp.getName() != null && comp.getName().equals(name)){
+                return (JPanel) comp;
+            }
+        }
+        return null;
+    }
 }

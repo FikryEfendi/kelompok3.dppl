@@ -116,9 +116,10 @@ public class ScholarshipListPanel extends JPanel {
             detailBtn.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
             detailBtn.setAlignmentX(Component.CENTER_ALIGNMENT);
             
-            String scholarshipId = sch.id;
+            final String scholarshipId = sch.id;
             detailBtn.addActionListener(e -> {
                 selectedScholarshipId = scholarshipId;
+                ((ScholarshipDetailPanel)win.getPanel("detail")).loadScholarship(scholarshipId);
                 win.show("detail");
             });
             
