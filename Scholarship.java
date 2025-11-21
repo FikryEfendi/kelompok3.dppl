@@ -8,8 +8,13 @@ public class Scholarship {
     public String quota;
     public String deadline;
     public String status; // Active, Inactive
+    
+    // TAMBAHAN: Daftar dokumen yang harus diupload
+    public List<String> requiredDocuments; // Misal: ["Proposal Penelitian", "Surat Rekomendasi", "Transkrip Nilai"]
 
-    public Scholarship(){}
+    public Scholarship(){
+        requiredDocuments = new ArrayList<>();
+    }
 
     public Scholarship(String id, String name, String description, String requirements, String quota, String deadline, String status){
         this.id = id;
@@ -19,11 +24,32 @@ public class Scholarship {
         this.quota = quota;
         this.deadline = deadline;
         this.status = status;
+        this.requiredDocuments = new ArrayList<>();
+    }
+    
+    // Constructor dengan required documents
+    public Scholarship(String id, String name, String description, String requirements, String quota, String deadline, String status, List<String> requiredDocuments){
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.requirements = requirements;
+        this.quota = quota;
+        this.deadline = deadline;
+        this.status = status;
+        this.requiredDocuments = requiredDocuments != null ? requiredDocuments : new ArrayList<>();
     }
 
     public String toJson(){
-        return String.format("{\"id\":\"%s\",\"name\":\"%s\",\"description\":\"%s\",\"requirements\":\"%s\",\"quota\":\"%s\",\"deadline\":\"%s\",\"status\":\"%s\"}", 
-            esc(id), esc(name), esc(description), esc(requirements), esc(quota), esc(deadline), esc(status));
+        // Convert required documents to JSON array
+        StringBuilder docsJson = new StringBuilder("[");
+        for(int i=0; i<requiredDocuments.size(); i++){
+            if(i > 0) docsJson.append(",");
+            docsJson.append("\\\"").append(esc(requiredDocuments.get(i))).append("\\\"");
+        }
+        docsJson.append("]");
+        
+        return String.format("{\"id\":\"%s\",\"name\":\"%s\",\"description\":\"%s\",\"requirements\":\"%s\",\"quota\":\"%s\",\"deadline\":\"%s\",\"status\":\"%s\",\"requiredDocuments\":%s}", 
+            esc(id), esc(name), esc(description), esc(requirements), esc(quota), esc(deadline), esc(status), docsJson.toString());
     }
 
     static String esc(String s){ 
@@ -40,6 +66,25 @@ public class Scholarship {
         sch.quota = between(s, "\"quota\":\"", "\"");
         sch.deadline = between(s, "\"deadline\":\"", "\"");
         sch.status = between(s, "\"status\":\"", "\"");
+        
+        // Parse required documents
+        int docStart = s.indexOf("\"requiredDocuments\":[");
+        if(docStart >= 0){
+            int docEnd = s.indexOf("]", docStart + 21);
+            if(docEnd >= 0){
+                String docStr = s.substring(docStart + 21, docEnd);
+                if(!docStr.trim().isEmpty()){
+                    String[] docs = docStr.split("\\\",\\\"");
+                    for(String doc : docs){
+                        String cleaned = doc.replace("\\\"", "").replace("\"", "").trim();
+                        if(!cleaned.isEmpty()){
+                            sch.requiredDocuments.add(unescape(cleaned));
+                        }
+                    }
+                }
+            }
+        }
+        
         return sch;
     }
 

@@ -1,6 +1,8 @@
 import javax.swing.*;
 import javax.swing.table.*;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.List;
 
 public class ManageApplicantsPanel extends JPanel {
@@ -197,7 +199,7 @@ public class ManageApplicantsPanel extends JPanel {
 
         JDialog dialog = new JDialog((Frame)SwingUtilities.getWindowAncestor(this), "Detail Pendaftar", true);
         dialog.setLayout(new BorderLayout());
-        dialog.setSize(500, 450);
+        dialog.setSize(600, 600);
         dialog.setLocationRelativeTo(this);
 
         JPanel content = new JPanel();
@@ -213,10 +215,27 @@ public class ManageApplicantsPanel extends JPanel {
         content.add(createDetailRow("Alamat:", app.address));
         content.add(createDetailRow("Foto:", app.photoPath));
         content.add(createDetailRow("Status:", app.status));
+        
+        // TAMBAHAN: Tampilkan dokumen yang diupload
+        if(app.documents != null && !app.documents.isEmpty()){
+            content.add(Box.createRigidArea(new Dimension(0, 15)));
+            
+            JLabel docTitle = new JLabel("📎 Dokumen yang Diupload:");
+            docTitle.setFont(new Font("Segoe UI Symbol", Font.BOLD, 14));
+            docTitle.setForeground(new Color(31, 41, 55));
+            docTitle.setAlignmentX(Component.LEFT_ALIGNMENT);
+            content.add(docTitle);
+            content.add(Box.createRigidArea(new Dimension(0, 10)));
+            
+            for(java.util.Map.Entry<String, String> entry : app.documents.entrySet()){
+                content.add(createDocumentRow(entry.getKey(), entry.getValue()));
+            }
+        }
 
         JButton closeBtn = new JButton("Tutup");
         closeBtn.setBackground(new Color(16, 185, 129));
         closeBtn.setForeground(Color.WHITE);
+        closeBtn.setFont(new Font("Segoe UI Symbol", Font.BOLD, 13));
         closeBtn.addActionListener(e -> dialog.dispose());
 
         JPanel btnPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
@@ -242,6 +261,45 @@ public class ManageApplicantsPanel extends JPanel {
 
         row.add(lblLabel, BorderLayout.WEST);
         row.add(lblValue, BorderLayout.CENTER);
+
+        return row;
+    }
+    
+    // TAMBAHAN: Create row untuk dokumen dengan tombol buka
+    private JPanel createDocumentRow(String docName, String filePath){
+        JPanel row = new JPanel(new BorderLayout(10, 0));
+        row.setBackground(new Color(249, 250, 251));
+        row.setBorder(BorderFactory.createCompoundBorder(
+            BorderFactory.createMatteBorder(0, 0, 1, 0, new Color(229, 231, 235)),
+            BorderFactory.createEmptyBorder(10, 10, 10, 10)
+        ));
+        row.setMaximumSize(new Dimension(Integer.MAX_VALUE, 50));
+        row.setAlignmentX(Component.LEFT_ALIGNMENT);
+
+        JLabel lblLabel = new JLabel(docName);
+        lblLabel.setFont(new Font("Segoe UI Symbol", Font.BOLD, 13));
+        lblLabel.setPreferredSize(new Dimension(200, 25));
+
+        JButton openBtn = new JButton("📄 Buka File");
+        openBtn.setFont(new Font("Segoe UI Symbol", Font.PLAIN, 12));
+        openBtn.setForeground(new Color(59, 130, 246));
+        openBtn.setBackground(Color.WHITE);
+        openBtn.setBorder(BorderFactory.createCompoundBorder(
+            BorderFactory.createLineBorder(new Color(59, 130, 246), 1, true),
+            BorderFactory.createEmptyBorder(5, 15, 5, 15)
+        ));
+        openBtn.setFocusPainted(false);
+        openBtn.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        openBtn.addActionListener(e -> {
+            try {
+                Desktop.getDesktop().open(new java.io.File(filePath));
+            } catch(Exception ex){
+                JOptionPane.showMessageDialog(row, "Tidak dapat membuka file: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        });
+
+        row.add(lblLabel, BorderLayout.WEST);
+        row.add(openBtn, BorderLayout.EAST);
 
         return row;
     }

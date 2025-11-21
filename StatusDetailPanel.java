@@ -1,4 +1,6 @@
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import javax.swing.*;
 
 public class StatusDetailPanel extends JPanel {
@@ -19,7 +21,7 @@ public class StatusDetailPanel extends JPanel {
         setLayout(new BorderLayout());
         setBackground(Color.WHITE);
         
-        // Top bar with green theme
+        // Top bar
         JPanel top = new JPanel(new BorderLayout());
         top.setBackground(new Color(16, 185, 129));
         top.setBorder(BorderFactory.createEmptyBorder(15, 25, 15, 25));
@@ -89,6 +91,14 @@ public class StatusDetailPanel extends JPanel {
         detailContent.add(createSectionTitle("📎 Dokumen & Kelengkapan"));
         detailContent.add(Box.createRigidArea(new Dimension(0, 15)));
         detailContent.add(createDetailRow("Pas Foto", app.photoPath));
+        
+        // TAMBAHAN: Tampilkan dokumen yang diupload
+        if(app.documents != null && !app.documents.isEmpty()){
+            detailContent.add(Box.createRigidArea(new Dimension(0, 10)));
+            for(java.util.Map.Entry<String, String> entry : app.documents.entrySet()){
+                detailContent.add(createDocumentRow(entry.getKey(), entry.getValue()));
+            }
+        }
 
         mainContent.add(detailContent);
         add(new JScrollPane(mainContent), BorderLayout.CENTER);
@@ -123,6 +133,52 @@ public class StatusDetailPanel extends JPanel {
         JLabel lblValue = new JLabel(value);
         lblValue.setFont(new Font("Segoe UI Symbol", Font.PLAIN, 14));
         lblValue.setForeground(new Color(31, 41, 55));
+        
+        row.add(lblLabel, BorderLayout.WEST);
+        row.add(lblValue, BorderLayout.CENTER);
+        
+        return row;
+    }
+    
+    // TAMBAHAN: Create row untuk dokumen dengan link
+    private JPanel createDocumentRow(String docName, String filePath){
+        JPanel row = new JPanel(new BorderLayout(20, 0));
+        row.setBackground(new Color(249, 250, 251));
+        row.setBorder(BorderFactory.createCompoundBorder(
+            BorderFactory.createMatteBorder(0, 0, 1, 0, new Color(229, 231, 235)),
+            BorderFactory.createEmptyBorder(12, 15, 12, 15)
+        ));
+        row.setMaximumSize(new Dimension(Integer.MAX_VALUE, 50));
+        row.setAlignmentX(Component.LEFT_ALIGNMENT);
+        
+        JLabel lblLabel = new JLabel(docName);
+        lblLabel.setFont(new Font("Segoe UI Symbol", Font.BOLD, 14));
+        lblLabel.setForeground(new Color(75, 85, 99));
+        lblLabel.setPreferredSize(new Dimension(180, 25));
+        
+        // Clickable label untuk membuka file
+        JLabel lblValue = new JLabel("📄 " + new java.io.File(filePath).getName());
+        lblValue.setFont(new Font("Segoe UI Symbol", Font.PLAIN, 14));
+        lblValue.setForeground(new Color(59, 130, 246));
+        lblValue.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        lblValue.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                try {
+                    Desktop.getDesktop().open(new java.io.File(filePath));
+                } catch(Exception ex){
+                    JOptionPane.showMessageDialog(row, "Tidak dapat membuka file: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                lblValue.setText("<html><u>📄 " + new java.io.File(filePath).getName() + "</u></html>");
+            }
+            @Override
+            public void mouseExited(MouseEvent e) {
+                lblValue.setText("📄 " + new java.io.File(filePath).getName());
+            }
+        });
         
         row.add(lblLabel, BorderLayout.WEST);
         row.add(lblValue, BorderLayout.CENTER);

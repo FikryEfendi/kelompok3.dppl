@@ -1,6 +1,7 @@
 import java.awt.*;
 import java.io.File;
 import java.nio.file.*;
+import java.util.*;
 import java.util.List;
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -13,13 +14,20 @@ public class ApplicationFormPanel extends JPanel {
     JLabel photoLabel;
     String photoPath = "";
     
+    // TAMBAHAN: Untuk upload dokumen persyaratan
+    Map<String, String> uploadedDocuments; // Key: nama dokumen, Value: path file
+    Map<String, JLabel> documentLabels; // Untuk menampilkan status upload
+    
     public ApplicationFormPanel(MainWindow win, DataStore store){
         this.win=win; 
         this.store=store;
+        uploadedDocuments = new HashMap<>();
+        documentLabels = new HashMap<>();
+        
         setLayout(new BorderLayout());
         setBackground(Color.WHITE);
         
-        // Top bar with green theme
+        // Top bar
         JPanel top = new JPanel(new BorderLayout());
         top.setBackground(new Color(16, 185, 129));
         top.setBorder(BorderFactory.createEmptyBorder(15, 25, 15, 25));
@@ -64,7 +72,7 @@ public class ApplicationFormPanel extends JPanel {
         form.add(formTitle);
         form.add(Box.createRigidArea(new Dimension(0,8)));
         
-        JLabel formDesc = new JLabel("Pastikan semua data yang Anda masukkan benar dan lengkap.");
+        JLabel formDesc = new JLabel("Pastikan semua data dan dokumen yang Anda upload benar dan lengkap.");
         formDesc.setFont(new Font("Segoe UI Symbol", Font.PLAIN, 14));
         formDesc.setForeground(new Color(107, 114, 128));
         formDesc.setAlignmentX(Component.LEFT_ALIGNMENT);
@@ -81,6 +89,9 @@ public class ApplicationFormPanel extends JPanel {
             BorderFactory.createLineBorder(new Color(209, 213, 219), 1, true),
             BorderFactory.createEmptyBorder(8, 12, 8, 12)
         ));
+        
+        // TAMBAHAN: Listener untuk update dokumen yang diperlukan
+        scholarshipCombo.addActionListener(e -> updateRequiredDocuments(form));
         
         loadScholarships();
         
@@ -171,6 +182,9 @@ public class ApplicationFormPanel extends JPanel {
         form.add(photoPanel);
         form.add(Box.createRigidArea(new Dimension(0,30)));
         
+        // TAMBAHAN: Section untuk upload dokumen persyaratan
+        // Akan di-populate saat beasiswa dipilih
+        
         // Submit button
         JButton submit = new JButton("📤 Kirim Pendaftaran"); 
         submit.setFont(new Font("Segoe UI Symbol", Font.BOLD, 16));
@@ -196,6 +210,157 @@ public class ApplicationFormPanel extends JPanel {
         
         mainContent.add(form);
         add(new JScrollPane(mainContent), BorderLayout.CENTER);
+        
+        // Initial load dokumen
+        updateRequiredDocuments(form);
+    }
+    
+    // TAMBAHAN: Method untuk update dokumen yang diperlukan
+    private void updateRequiredDocuments(JPanel form){
+        // Hapus dokumen section yang lama (jika ada)
+        Component[] components = form.getComponents();
+        boolean startRemoving = false;
+        java.util.List<Component> toRemove = new ArrayList<>();
+        
+        for(Component comp : components){
+            if(comp instanceof JLabel && ((JLabel)comp).getText().equals("📎 Dokumen Persyaratan")){
+                startRemoving = true;
+            }
+            if(startRemoving){
+                toRemove.add(comp);
+                if(comp instanceof JButton && ((JButton)comp).getText().startsWith("📤")){
+                    break;
+                }
+            }
+        }
+        
+        for(Component comp : toRemove){
+            if(!(comp instanceof JButton && ((JButton)comp).getText().startsWith("📤"))){
+                form.remove(comp);
+            }
+        }
+        
+        // Clear uploaded documents
+        uploadedDocuments.clear();
+        documentLabels.clear();
+        
+        // Dapatkan beasiswa yang dipilih
+        String selectedScholarship = (String) scholarshipCombo.getSelectedItem();
+        if(selectedScholarship == null) return;
+        
+        Scholarship scholarship = null;
+        for(Scholarship s : store.loadScholarships()){
+            if(s.name.equals(selectedScholarship)){
+                scholarship = s;
+                break;
+            }
+        }
+        
+        if(scholarship == null || scholarship.requiredDocuments.isEmpty()) return;
+        
+        // Tambahkan section dokumen baru
+        int submitIndex = -1;
+        for(int i = 0; i < form.getComponentCount(); i++){
+            Component comp = form.getComponent(i);
+            if(comp instanceof JButton && ((JButton)comp).getText().startsWith("📤")){
+                submitIndex = i;
+                break;
+            }
+        }
+        
+        if(submitIndex < 0) return;
+        
+        // Insert dokumen section sebelum submit button
+        JLabel docTitle = createLabel("📎 Dokumen Persyaratan");
+        form.add(docTitle, submitIndex);
+        form.add(Box.createRigidArea(new Dimension(0,10)), submitIndex + 1);
+        
+        int currentIndex = submitIndex + 2;
+        
+        for(String docName : scholarship.requiredDocuments){
+            JPanel docPanel = createDocumentUploadPanel(docName);
+            form.add(docPanel, currentIndex++);
+            form.add(Box.createRigidArea(new Dimension(0,15)), currentIndex++);
+        }
+        
+        form.add(Box.createRigidArea(new Dimension(0,15)), currentIndex);
+        
+        form.revalidate();
+        form.repaint();
+    }
+    
+    // TAMBAHAN: Create panel untuk upload satu dokumen
+    private JPanel createDocumentUploadPanel(String docName){
+        JPanel panel = new JPanel();
+        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+        panel.setBackground(Color.WHITE);
+        panel.setAlignmentX(Component.LEFT_ALIGNMENT);
+        panel.setMaximumSize(new Dimension(Integer.MAX_VALUE, 80));
+        
+        JLabel nameLabel = new JLabel(docName);
+        nameLabel.setFont(new Font("Segoe UI Symbol", Font.BOLD, 14));
+        nameLabel.setForeground(new Color(75, 85, 99));
+        nameLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
+        
+        JLabel statusLabel = new JLabel("Belum diupload");
+        statusLabel.setFont(new Font("Segoe UI Symbol", Font.ITALIC, 12));
+        statusLabel.setForeground(new Color(156, 163, 175));
+        statusLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
+        documentLabels.put(docName, statusLabel);
+        
+        JButton uploadBtn = new JButton("📁 Upload " + docName);
+        uploadBtn.setFont(new Font("Segoe UI Symbol", Font.PLAIN, 13));
+        uploadBtn.setForeground(new Color(59, 130, 246));
+        uploadBtn.setBackground(Color.WHITE);
+        uploadBtn.setBorder(BorderFactory.createCompoundBorder(
+            BorderFactory.createLineBorder(new Color(59, 130, 246), 2, true),
+            BorderFactory.createEmptyBorder(10, 20, 10, 20)
+        ));
+        uploadBtn.setFocusPainted(false);
+        uploadBtn.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        uploadBtn.setAlignmentX(Component.LEFT_ALIGNMENT);
+        uploadBtn.addActionListener(e -> chooseDocumentFile(docName));
+        
+        uploadBtn.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                uploadBtn.setBackground(new Color(239, 246, 255));
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                uploadBtn.setBackground(Color.WHITE);
+            }
+        });
+        
+        panel.add(nameLabel);
+        panel.add(Box.createRigidArea(new Dimension(0,5)));
+        panel.add(statusLabel);
+        panel.add(Box.createRigidArea(new Dimension(0,8)));
+        panel.add(uploadBtn);
+        
+        return panel;
+    }
+    
+    // TAMBAHAN: Method untuk memilih file dokumen
+    private void chooseDocumentFile(String docName){
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setDialogTitle("Upload " + docName);
+        
+        FileNameExtensionFilter filter = new FileNameExtensionFilter(
+            "Dokumen (PDF, DOC, DOCX, JPG, PNG)", "pdf", "doc", "docx", "jpg", "jpeg", "png");
+        fileChooser.setFileFilter(filter);
+        
+        int result = fileChooser.showOpenDialog(this);
+        
+        if(result == JFileChooser.APPROVE_OPTION){
+            File selectedFile = fileChooser.getSelectedFile();
+            if(selectedFile.exists()){
+                uploadedDocuments.put(docName, selectedFile.getAbsolutePath());
+                JLabel label = documentLabels.get(docName);
+                if(label != null){
+                    label.setText("✅ " + selectedFile.getName());
+                    label.setForeground(new Color(34, 197, 94));
+                }
+            }
+        }
     }
     
     private void choosePhotoFile(){
@@ -278,6 +443,24 @@ public class ApplicationFormPanel extends JPanel {
                 return;
             }
             
+            // TAMBAHAN: Validasi dokumen persyaratan
+            Scholarship scholarship = null;
+            for(Scholarship s : store.loadScholarships()){
+                if(s.name.equals(selectedScholarship)){
+                    scholarship = s;
+                    break;
+                }
+            }
+            
+            if(scholarship != null && !scholarship.requiredDocuments.isEmpty()){
+                for(String docName : scholarship.requiredDocuments){
+                    if(!uploadedDocuments.containsKey(docName) || uploadedDocuments.get(docName).isEmpty()){
+                        JOptionPane.showMessageDialog(this, "Mohon upload semua dokumen persyaratan!\nDokumen yang belum diupload: " + docName, "Peringatan", JOptionPane.WARNING_MESSAGE);
+                        return;
+                    }
+                }
+            }
+            
             Application a = new Application();
             a.nim = nim;
             a.scholarshipName = selectedScholarship;
@@ -287,6 +470,7 @@ public class ApplicationFormPanel extends JPanel {
             a.address = addressText;
             a.photoPath = photoPath;
             a.status = "Pending";
+            a.documents = new HashMap<>(uploadedDocuments); // Copy uploaded documents
             
             List<Application> apps = store.loadApplications();
             
@@ -299,6 +483,7 @@ public class ApplicationFormPanel extends JPanel {
             apps.add(a);
             store.saveApplications(apps);
             
+            // Clear form
             if(scholarshipCombo.getItemCount() > 0) scholarshipCombo.setSelectedIndex(0);
             fullName.setText("");
             ttl.setText("");
@@ -307,6 +492,7 @@ public class ApplicationFormPanel extends JPanel {
             photoPath = "";
             photoLabel.setText("Belum ada foto dipilih");
             photoLabel.setForeground(new Color(107, 114, 128));
+            uploadedDocuments.clear();
             
             Path selectedPath = Paths.get("selected_scholarship.txt");
             if(Files.exists(selectedPath)){
@@ -316,6 +502,7 @@ public class ApplicationFormPanel extends JPanel {
             win.show("thanks");
         } catch(Exception e){ 
             JOptionPane.showMessageDialog(this, "Gagal submit: " + e.getMessage()); 
+            e.printStackTrace();
         }
     }
 }
