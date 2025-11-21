@@ -15,7 +15,6 @@ public class ReportsPanel extends JPanel {
         setLayout(new BorderLayout());
         setBackground(Color.WHITE);
 
-        // Top panel
         JPanel top = new JPanel(new BorderLayout());
         top.setBackground(new Color(16, 185, 129));
         top.setBorder(BorderFactory.createEmptyBorder(15, 25, 15, 25));
@@ -37,16 +36,15 @@ public class ReportsPanel extends JPanel {
         top.add(back, BorderLayout.WEST);
         top.add(title, BorderLayout.CENTER);
 
-        // Center content
         JPanel center = new JPanel();
         center.setLayout(new BoxLayout(center, BoxLayout.Y_AXIS));
         center.setBorder(BorderFactory.createEmptyBorder(30, 40, 30, 40));
         center.setBackground(new Color(249, 250, 251));
 
-        // Statistics cards
         JPanel statsPanel = new JPanel(new GridLayout(2, 2, 20, 20));
         statsPanel.setBackground(new Color(249, 250, 251));
-        statsPanel.setMaximumSize(new Dimension(Integer.MAX_VALUE, 250));
+        statsPanel.setMaximumSize(new Dimension(Integer.MAX_VALUE, 280));
+        statsPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
 
         List<Application> apps = store.loadApplications();
         List<User> users = store.loadUsers();
@@ -54,7 +52,6 @@ public class ReportsPanel extends JPanel {
 
         int totalApps = apps.size();
         int pending = (int) apps.stream().filter(a -> a.status.equals("Pending")).count();
-        int verified = (int) apps.stream().filter(a -> a.status.equals("Verified")).count();
         int accepted = (int) apps.stream().filter(a -> a.status.equals("Accepted")).count();
         int rejected = (int) apps.stream().filter(a -> a.status.equals("Rejected")).count();
 
@@ -63,11 +60,11 @@ public class ReportsPanel extends JPanel {
         statsPanel.add(createStatCard("✅ Diterima", String.valueOf(accepted), new Color(34, 197, 94)));
         statsPanel.add(createStatCard("❌ Ditolak", String.valueOf(rejected), new Color(239, 68, 68)));
 
-        // Report buttons
-        JPanel reportButtons = new JPanel(new GridLayout(3, 2, 15, 15));
+        JPanel reportButtons = new JPanel(new GridLayout(3, 2, 20, 20));
         reportButtons.setBackground(new Color(249, 250, 251));
         reportButtons.setBorder(BorderFactory.createEmptyBorder(30, 0, 0, 0));
-        reportButtons.setMaximumSize(new Dimension(Integer.MAX_VALUE, 200));
+        reportButtons.setMaximumSize(new Dimension(Integer.MAX_VALUE, 250));
+        reportButtons.setAlignmentX(Component.LEFT_ALIGNMENT);
 
         reportButtons.add(createReportButton("📄 Laporan Pendaftar", "Generate laporan semua pendaftar", () -> generateApplicantReport()));
         reportButtons.add(createReportButton("✅ Laporan Penerima", "Generate laporan yang diterima", () -> generateAcceptedReport()));
@@ -89,21 +86,21 @@ public class ReportsPanel extends JPanel {
         card.setBackground(Color.WHITE);
         card.setBorder(BorderFactory.createCompoundBorder(
             BorderFactory.createLineBorder(new Color(229, 231, 235), 1, true),
-            BorderFactory.createEmptyBorder(20, 20, 20, 20)
+            BorderFactory.createEmptyBorder(25, 25, 25, 25)
         ));
 
         JLabel titleLabel = new JLabel(title);
-        titleLabel.setFont(new Font("Segoe UI Symbol", Font.PLAIN, 14));
+        titleLabel.setFont(new Font("Segoe UI Symbol", Font.PLAIN, 15));
         titleLabel.setForeground(new Color(107, 114, 128));
         titleLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
 
         JLabel valueLabel = new JLabel(value);
-        valueLabel.setFont(new Font("Segoe UI Symbol", Font.BOLD, 32));
+        valueLabel.setFont(new Font("Segoe UI Symbol", Font.BOLD, 36));
         valueLabel.setForeground(color);
         valueLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
 
         card.add(titleLabel);
-        card.add(Box.createRigidArea(new Dimension(0, 10)));
+        card.add(Box.createRigidArea(new Dimension(0, 12)));
         card.add(valueLabel);
 
         return card;
@@ -111,34 +108,34 @@ public class ReportsPanel extends JPanel {
 
     private JButton createReportButton(String title, String desc, Runnable action){
         JButton btn = new JButton();
-        btn.setLayout(new BorderLayout(10, 5));
+        btn.setLayout(new BorderLayout(10, 10));
         btn.setBackground(Color.WHITE);
         btn.setBorder(BorderFactory.createCompoundBorder(
             BorderFactory.createLineBorder(new Color(229, 231, 235), 1, true),
-            BorderFactory.createEmptyBorder(15, 15, 15, 15)
+            BorderFactory.createEmptyBorder(20, 20, 20, 20)
         ));
         btn.setCursor(new Cursor(Cursor.HAND_CURSOR));
         btn.setFocusPainted(false);
 
-        JLabel titleLabel = new JLabel(title);
-        titleLabel.setFont(new Font("Segoe UI Symbol", Font.BOLD, 14));
-        titleLabel.setForeground(new Color(31, 41, 55));
-
-        // MENGGUNAKAN HTML UNTUK MEMASTIKAN LINE WRAP DAN TINGGI CUKUP
-        JLabel descLabel = new JLabel("<html><p style='width: 150px;'>" + desc + "</p></html>"); 
-        descLabel.setFont(new Font("Segoe UI Symbol", Font.PLAIN, 12));
-        descLabel.setForeground(new Color(107, 114, 128));
-
         JPanel textPanel = new JPanel();
         textPanel.setLayout(new BoxLayout(textPanel, BoxLayout.Y_AXIS));
         textPanel.setBackground(Color.WHITE);
-        // TAMBAHKAN RUANG VERTIKAL ANTARA JUDUL DAN DESKRIPSI
+
+        JLabel titleLabel = new JLabel(title);
+        titleLabel.setFont(new Font("Segoe UI Symbol", Font.BOLD, 15));
+        titleLabel.setForeground(new Color(31, 41, 55));
+        titleLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
+
+        JLabel descLabel = new JLabel("<html><p style='width: 200px;'>" + desc + "</p></html>"); 
+        descLabel.setFont(new Font("Segoe UI Symbol", Font.PLAIN, 13));
+        descLabel.setForeground(new Color(107, 114, 128));
+        descLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
+
         textPanel.add(titleLabel);
-        textPanel.add(Box.createRigidArea(new Dimension(0, 3))); // Ruang 3px
+        textPanel.add(Box.createRigidArea(new Dimension(0, 6)));
         textPanel.add(descLabel);
 
         btn.add(textPanel, BorderLayout.CENTER);
-
         btn.addActionListener(e -> action.run());
 
         btn.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -146,14 +143,14 @@ public class ReportsPanel extends JPanel {
                 btn.setBackground(new Color(240, 253, 244));
                 btn.setBorder(BorderFactory.createCompoundBorder(
                     BorderFactory.createLineBorder(new Color(16, 185, 129), 2, true),
-                    BorderFactory.createEmptyBorder(14, 14, 14, 14)
+                    BorderFactory.createEmptyBorder(19, 19, 19, 19)
                 ));
             }
             public void mouseExited(java.awt.event.MouseEvent evt) {
                 btn.setBackground(Color.WHITE);
                 btn.setBorder(BorderFactory.createCompoundBorder(
                     BorderFactory.createLineBorder(new Color(229, 231, 235), 1, true),
-                    BorderFactory.createEmptyBorder(15, 15, 15, 15)
+                    BorderFactory.createEmptyBorder(20, 20, 20, 20)
                 ));
             }
         });
@@ -183,9 +180,9 @@ public class ReportsPanel extends JPanel {
             String filename = "Laporan_Pendaftar_" + System.currentTimeMillis() + ".txt";
             Files.write(Paths.get(filename), sb.toString().getBytes());
 
-            JOptionPane.showMessageDialog(this, "Laporan berhasil dibuat!\nFile: " + filename);
+            JOptionPane.showMessageDialog(this, "Laporan berhasil dibuat!\nFile: " + filename, "Berhasil", JOptionPane.INFORMATION_MESSAGE);
         } catch(Exception e){
-            JOptionPane.showMessageDialog(this, "Error: " + e.getMessage());
+            JOptionPane.showMessageDialog(this, "Error: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 
@@ -217,9 +214,9 @@ public class ReportsPanel extends JPanel {
             String filename = "Laporan_Penerima_" + System.currentTimeMillis() + ".txt";
             Files.write(Paths.get(filename), sb.toString().getBytes());
 
-            JOptionPane.showMessageDialog(this, "Laporan berhasil dibuat!\nFile: " + filename);
+            JOptionPane.showMessageDialog(this, "Laporan berhasil dibuat!\nFile: " + filename, "Berhasil", JOptionPane.INFORMATION_MESSAGE);
         } catch(Exception e){
-            JOptionPane.showMessageDialog(this, "Error: " + e.getMessage());
+            JOptionPane.showMessageDialog(this, "Error: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 
@@ -237,9 +234,10 @@ public class ReportsPanel extends JPanel {
         }
 
         StringBuilder sb = new StringBuilder();
-        sb.append("Statistik Pendaftar per Beasiswa:\n\n");
+        sb.append("STATISTIK PENDAFTAR PER BEASISWA\n");
+        sb.append("=".repeat(50)).append("\n\n");
         for(Map.Entry<String, Integer> entry : stats.entrySet()){
-            sb.append(entry.getKey()).append(": ").append(entry.getValue()).append(" pendaftar\n");
+            sb.append(String.format("%-35s : %d pendaftar\n", entry.getKey(), entry.getValue()));
         }
 
         JOptionPane.showMessageDialog(this, sb.toString(), "Statistik per Beasiswa", JOptionPane.INFORMATION_MESSAGE);
@@ -266,9 +264,9 @@ public class ReportsPanel extends JPanel {
             String filename = "Laporan_User_" + System.currentTimeMillis() + ".txt";
             Files.write(Paths.get(filename), sb.toString().getBytes());
 
-            JOptionPane.showMessageDialog(this, "Laporan berhasil dibuat!\nFile: " + filename);
+            JOptionPane.showMessageDialog(this, "Laporan berhasil dibuat!\nFile: " + filename, "Berhasil", JOptionPane.INFORMATION_MESSAGE);
         } catch(Exception e){
-            JOptionPane.showMessageDialog(this, "Error: " + e.getMessage());
+            JOptionPane.showMessageDialog(this, "Error: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 
@@ -286,9 +284,9 @@ public class ReportsPanel extends JPanel {
             String filename = "Export_Data_" + System.currentTimeMillis() + ".csv";
             Files.write(Paths.get(filename), sb.toString().getBytes());
 
-            JOptionPane.showMessageDialog(this, "Data berhasil di-export!\nFile: " + filename);
+            JOptionPane.showMessageDialog(this, "Data berhasil di-export!\nFile: " + filename, "Berhasil", JOptionPane.INFORMATION_MESSAGE);
         } catch(Exception e){
-            JOptionPane.showMessageDialog(this, "Error: " + e.getMessage());
+            JOptionPane.showMessageDialog(this, "Error: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 
@@ -303,14 +301,16 @@ public class ReportsPanel extends JPanel {
         int rejected = (int) apps.stream().filter(a -> a.status.equals("Rejected")).count();
 
         String summary = String.format(
-            "RINGKASAN SISTEM BEASISWA\n\n" +
-            "Total User Terdaftar: %d\n" +
-            "Total Beasiswa Tersedia: %d\n" +
-            "Total Pendaftar: %d\n" +
-            "  - Pending: %d\n" +
-            "  - Verified: %d\n" +
-            "  - Accepted: %d\n" +
-            "  - Rejected: %d\n",
+            "RINGKASAN SISTEM BEASISWA\n" +
+            "=".repeat(40) + "\n\n" +
+            "Total User Terdaftar    : %d\n" +
+            "Total Beasiswa Tersedia : %d\n" +
+            "Total Pendaftar         : %d\n\n" +
+            "Status Pendaftar:\n" +
+            "  - Pending             : %d\n" +
+            "  - Verified            : %d\n" +
+            "  - Accepted            : %d\n" +
+            "  - Rejected            : %d\n",
             users.size(), scholarships.size(), apps.size(), pending, verified, accepted, rejected
         );
 

@@ -28,7 +28,6 @@ public class ScholarshipDetailPanel extends JPanel {
         }
         
         if(currentScholarship == null){
-            // Fallback if not found
             currentScholarship = scholarships.get(0);
         }
         
@@ -67,43 +66,39 @@ public class ScholarshipDetailPanel extends JPanel {
         headerSection.setBackground(Color.WHITE);
         headerSection.setBorder(BorderFactory.createCompoundBorder(
             BorderFactory.createLineBorder(new Color(167, 243, 208), 2, true),
-            BorderFactory.createEmptyBorder(30, 30, 30, 30)
+            BorderFactory.createEmptyBorder(35, 35, 35, 35)
         ));
         headerSection.setAlignmentX(Component.LEFT_ALIGNMENT);
         
         JLabel scholarshipTitle = new JLabel(currentScholarship.name);
-        scholarshipTitle.setFont(new Font("Segoe UI Symbol", Font.BOLD, 26));
+        scholarshipTitle.setFont(new Font("Segoe UI Symbol", Font.BOLD, 28));
         scholarshipTitle.setForeground(new Color(6, 78, 59));
         scholarshipTitle.setAlignmentX(Component.LEFT_ALIGNMENT);
         
-        JPanel statusPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
-        statusPanel.setBackground(Color.WHITE);
-        statusPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
-        
         JLabel statusBadge = new JLabel("  " + currentScholarship.status + "  ");
-        statusBadge.setFont(new Font("Segoe UI Symbol", Font.BOLD, 12));
+        statusBadge.setFont(new Font("Segoe UI Symbol", Font.BOLD, 13));
         statusBadge.setForeground(Color.WHITE);
         statusBadge.setBackground(new Color(16, 185, 129));
         statusBadge.setOpaque(true);
-        statusBadge.setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 10));
-        statusPanel.add(statusBadge);
+        statusBadge.setBorder(BorderFactory.createEmptyBorder(6, 12, 6, 12));
+        statusBadge.setAlignmentX(Component.LEFT_ALIGNMENT);
         
         headerSection.add(scholarshipTitle);
-        headerSection.add(Box.createRigidArea(new Dimension(0, 10)));
-        headerSection.add(statusPanel);
+        headerSection.add(Box.createRigidArea(new Dimension(0, 12)));
+        headerSection.add(statusBadge);
         
         // Info cards
         JPanel infoCards = new JPanel(new GridLayout(1, 2, 20, 0));
         infoCards.setBackground(new Color(240, 253, 244));
         infoCards.setBorder(BorderFactory.createEmptyBorder(20, 0, 20, 0));
         infoCards.setAlignmentX(Component.LEFT_ALIGNMENT);
-        infoCards.setMaximumSize(new Dimension(Integer.MAX_VALUE, 100));
+        infoCards.setMaximumSize(new Dimension(Integer.MAX_VALUE, 110));
         
         infoCards.add(createInfoCard("📊 Kuota Tersedia", currentScholarship.quota + " Mahasiswa"));
         infoCards.add(createInfoCard("📅 Batas Pendaftaran", currentScholarship.deadline));
         
         // Description section
-        JPanel descSection = createSection("📝 Deskripsi", currentScholarship.description);
+        JPanel descSection = createSection("📄 Deskripsi", currentScholarship.description);
         
         // Requirements section
         JPanel reqSection = createSection("✅ Persyaratan", currentScholarship.requirements);
@@ -114,31 +109,30 @@ public class ScholarshipDetailPanel extends JPanel {
         actionSection.setBackground(Color.WHITE);
         actionSection.setBorder(BorderFactory.createCompoundBorder(
             BorderFactory.createLineBorder(new Color(167, 243, 208), 2, true),
-            BorderFactory.createEmptyBorder(25, 30, 25, 30)
+            BorderFactory.createEmptyBorder(30, 35, 30, 35)
         ));
         actionSection.setAlignmentX(Component.LEFT_ALIGNMENT);
         
         JLabel actionTitle = new JLabel("Tertarik dengan beasiswa ini?");
-        actionTitle.setFont(new Font("Segoe UI Symbol", Font.BOLD, 18));
+        actionTitle.setFont(new Font("Segoe UI Symbol", Font.BOLD, 20));
         actionTitle.setForeground(new Color(6, 78, 59));
         actionTitle.setAlignmentX(Component.LEFT_ALIGNMENT);
         
         JLabel actionDesc = new JLabel("Pastikan Anda memenuhi semua persyaratan sebelum mendaftar.");
-        actionDesc.setFont(new Font("Segoe UI Symbol", Font.PLAIN, 13));
+        actionDesc.setFont(new Font("Segoe UI Symbol", Font.PLAIN, 14));
         actionDesc.setForeground(new Color(107, 114, 128));
         actionDesc.setAlignmentX(Component.LEFT_ALIGNMENT);
         
         JButton applyBtn = new JButton("📝 Daftar Sekarang");
-        applyBtn.setFont(new Font("Segoe UI Symbol", Font.BOLD, 15));
+        applyBtn.setFont(new Font("Segoe UI Symbol", Font.BOLD, 16));
         applyBtn.setForeground(Color.WHITE);
         applyBtn.setBackground(new Color(16, 185, 129));
         applyBtn.setBorderPainted(false);
         applyBtn.setFocusPainted(false);
         applyBtn.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        applyBtn.setBorder(BorderFactory.createEmptyBorder(15, 40, 15, 40));
+        applyBtn.setBorder(BorderFactory.createEmptyBorder(16, 45, 16, 45));
         applyBtn.setAlignmentX(Component.LEFT_ALIGNMENT);
         applyBtn.addActionListener(e -> {
-            // Save selected scholarship to pass to application form
             try {
                 java.nio.file.Files.write(java.nio.file.Paths.get("selected_scholarship.txt"), 
                     (currentScholarship.id + "|" + currentScholarship.name).getBytes());
@@ -158,9 +152,9 @@ public class ScholarshipDetailPanel extends JPanel {
         });
         
         actionSection.add(actionTitle);
-        actionSection.add(Box.createRigidArea(new Dimension(0, 5)));
+        actionSection.add(Box.createRigidArea(new Dimension(0, 8)));
         actionSection.add(actionDesc);
-        actionSection.add(Box.createRigidArea(new Dimension(0, 20)));
+        actionSection.add(Box.createRigidArea(new Dimension(0, 25)));
         actionSection.add(applyBtn);
         
         // Add all sections
@@ -182,21 +176,21 @@ public class ScholarshipDetailPanel extends JPanel {
         card.setBackground(Color.WHITE);
         card.setBorder(BorderFactory.createCompoundBorder(
             BorderFactory.createLineBorder(new Color(167, 243, 208), 2, true),
-            BorderFactory.createEmptyBorder(20, 20, 20, 20)
+            BorderFactory.createEmptyBorder(25, 25, 25, 25)
         ));
         
         JLabel titleLabel = new JLabel(title);
-        titleLabel.setFont(new Font("Segoe UI Symbol", Font.PLAIN, 13));
+        titleLabel.setFont(new Font("Segoe UI Symbol", Font.PLAIN, 14));
         titleLabel.setForeground(new Color(107, 114, 128));
         titleLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
         
         JLabel valueLabel = new JLabel(value);
-        valueLabel.setFont(new Font("Segoe UI Symbol", Font.BOLD, 18));
+        valueLabel.setFont(new Font("Segoe UI Symbol", Font.BOLD, 20));
         valueLabel.setForeground(new Color(6, 78, 59));
         valueLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
         
         card.add(titleLabel);
-        card.add(Box.createRigidArea(new Dimension(0, 8)));
+        card.add(Box.createRigidArea(new Dimension(0, 10)));
         card.add(valueLabel);
         
         return card;
@@ -208,12 +202,12 @@ public class ScholarshipDetailPanel extends JPanel {
         section.setBackground(Color.WHITE);
         section.setBorder(BorderFactory.createCompoundBorder(
             BorderFactory.createLineBorder(new Color(167, 243, 208), 2, true),
-            BorderFactory.createEmptyBorder(25, 30, 25, 30)
+            BorderFactory.createEmptyBorder(30, 35, 30, 35)
         ));
         section.setAlignmentX(Component.LEFT_ALIGNMENT);
         
         JLabel titleLabel = new JLabel(title);
-        titleLabel.setFont(new Font("Segoe UI Symbol", Font.BOLD, 18));
+        titleLabel.setFont(new Font("Segoe UI Symbol", Font.BOLD, 20));
         titleLabel.setForeground(new Color(6, 78, 59));
         titleLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
         
@@ -224,11 +218,11 @@ public class ScholarshipDetailPanel extends JPanel {
         contentArea.setFont(new Font("Segoe UI Symbol", Font.PLAIN, 14));
         contentArea.setForeground(new Color(55, 65, 81));
         contentArea.setBackground(Color.WHITE);
-        contentArea.setBorder(BorderFactory.createEmptyBorder(10, 0, 0, 0));
+        contentArea.setBorder(BorderFactory.createEmptyBorder(12, 0, 0, 0));
         contentArea.setAlignmentX(Component.LEFT_ALIGNMENT);
         
         section.add(titleLabel);
-        section.add(Box.createRigidArea(new Dimension(0, 10)));
+        section.add(Box.createRigidArea(new Dimension(0, 12)));
         section.add(contentArea);
         
         return section;

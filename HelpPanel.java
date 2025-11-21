@@ -13,7 +13,6 @@ public class HelpPanel extends JPanel {
         setLayout(new BorderLayout());
         setBackground(Color.WHITE);
         
-        // Top bar with green theme
         JPanel top = new JPanel(new BorderLayout());
         top.setBackground(new Color(16, 185, 129));
         top.setBorder(BorderFactory.createEmptyBorder(15, 25, 15, 25));
@@ -36,7 +35,6 @@ public class HelpPanel extends JPanel {
         top.add(titleLabel, BorderLayout.CENTER);
         add(top, BorderLayout.NORTH);
 
-        // Main content
         JPanel mainContent = new JPanel();
         mainContent.setLayout(new BoxLayout(mainContent, BoxLayout.Y_AXIS));
         mainContent.setBorder(BorderFactory.createEmptyBorder(30, 40, 30, 40));
@@ -47,81 +45,78 @@ public class HelpPanel extends JPanel {
         form.setBackground(Color.WHITE);
         form.setBorder(BorderFactory.createCompoundBorder(
             BorderFactory.createLineBorder(new Color(167, 243, 208), 2, true),
-            BorderFactory.createEmptyBorder(30, 30, 30, 30)
+            BorderFactory.createEmptyBorder(35, 35, 35, 35)
         ));
         form.setAlignmentX(Component.LEFT_ALIGNMENT);
         
         JLabel title = new JLabel("Sampaikan Keluhan Anda");
-        title.setFont(new Font("Segoe UI Symbol", Font.BOLD, 20));
+        title.setFont(new Font("Segoe UI Symbol", Font.BOLD, 22));
         title.setForeground(new Color(6, 78, 59));
         title.setAlignmentX(Component.LEFT_ALIGNMENT);
         form.add(title);
         
         JLabel subtitle = new JLabel("Kami siap membantu menyelesaikan masalah Anda");
-        subtitle.setFont(new Font("Segoe UI Symbol", Font.PLAIN, 13));
+        subtitle.setFont(new Font("Segoe UI Symbol", Font.PLAIN, 14));
         subtitle.setForeground(new Color(107, 114, 128));
         subtitle.setAlignmentX(Component.LEFT_ALIGNMENT);
         form.add(subtitle);
-        form.add(Box.createRigidArea(new Dimension(0,25)));
+        form.add(Box.createRigidArea(new Dimension(0,30)));
         
-        // Subject
         JLabel subjectLabel = new JLabel("Subjek Keluhan");
-        subjectLabel.setFont(new Font("Segoe UI Symbol", Font.BOLD, 14));
+        subjectLabel.setFont(new Font("Segoe UI Symbol", Font.BOLD, 15));
         subjectLabel.setForeground(new Color(55, 65, 81));
         subjectLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
         form.add(subjectLabel);
-        form.add(Box.createRigidArea(new Dimension(0,8)));
+        form.add(Box.createRigidArea(new Dimension(0,10)));
         
         subject = new JTextField(); 
-        subject.setMaximumSize(new Dimension(Integer.MAX_VALUE, 40)); 
+        subject.setMaximumSize(new Dimension(Integer.MAX_VALUE, 45)); 
         subject.setFont(new Font("Segoe UI Symbol", Font.PLAIN, 14));
         subject.setBorder(BorderFactory.createCompoundBorder(
             BorderFactory.createLineBorder(new Color(209, 213, 219), 1, true),
-            BorderFactory.createEmptyBorder(8, 12, 8, 12)
+            BorderFactory.createEmptyBorder(10, 14, 10, 14)
         ));
         subject.setAlignmentX(Component.LEFT_ALIGNMENT);
         form.add(subject);
-        form.add(Box.createRigidArea(new Dimension(0,20)));
+        form.add(Box.createRigidArea(new Dimension(0,25)));
         
-        // Body
         JLabel bodyLabel = new JLabel("Detail Keluhan");
-        bodyLabel.setFont(new Font("Segoe UI Symbol", Font.BOLD, 14));
+        bodyLabel.setFont(new Font("Segoe UI Symbol", Font.BOLD, 15));
         bodyLabel.setForeground(new Color(55, 65, 81));
         bodyLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
         form.add(bodyLabel);
-        form.add(Box.createRigidArea(new Dimension(0,8)));
+        form.add(Box.createRigidArea(new Dimension(0,10)));
         
-        body = new JTextArea(8,40); 
+        body = new JTextArea(10,40); 
         body.setLineWrap(true);
         body.setWrapStyleWord(true);
         body.setFont(new Font("Segoe UI Symbol", Font.PLAIN, 14));
         body.setBorder(BorderFactory.createCompoundBorder(
             BorderFactory.createLineBorder(new Color(209, 213, 219), 1, true),
-            BorderFactory.createEmptyBorder(10, 12, 10, 12)
+            BorderFactory.createEmptyBorder(12, 14, 12, 14)
         ));
         
         JScrollPane scrollPane = new JScrollPane(body);
-        scrollPane.setMaximumSize(new Dimension(Integer.MAX_VALUE, 200));
+        scrollPane.setMaximumSize(new Dimension(Integer.MAX_VALUE, 240));
         scrollPane.setAlignmentX(Component.LEFT_ALIGNMENT);
         form.add(scrollPane);
-        form.add(Box.createRigidArea(new Dimension(0,25)));
+        form.add(Box.createRigidArea(new Dimension(0,30)));
         
-        // Send button
         JButton send = new JButton("📤 Kirim Keluhan"); 
-        send.setFont(new Font("Segoe UI Symbol", Font.BOLD, 15));
+        send.setFont(new Font("Segoe UI Symbol", Font.BOLD, 16));
         send.setForeground(Color.WHITE);
         send.setBackground(new Color(16, 185, 129));
         send.setBorderPainted(false);
         send.setFocusPainted(false);
         send.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        send.setBorder(BorderFactory.createEmptyBorder(15, 40, 15, 40));
+        send.setBorder(BorderFactory.createEmptyBorder(16, 45, 16, 45));
         send.setAlignmentX(Component.LEFT_ALIGNMENT);
         send.addActionListener(e -> {
             if(subject.getText().trim().isEmpty() || body.getText().trim().isEmpty()){
-                JOptionPane.showMessageDialog(this, "Mohon isi semua field.");
+                JOptionPane.showMessageDialog(this, "Mohon isi semua field.", "Peringatan", JOptionPane.WARNING_MESSAGE);
                 return;
             }
-            JOptionPane.showMessageDialog(this, "Keluhan terkirim. Terima kasih atas masukan Anda!");
+            JOptionPane.showMessageDialog(this, "Keluhan terkirim. Terima kasih atas masukan Anda!", "Berhasil", JOptionPane.INFORMATION_MESSAGE);
             subject.setText("");
             body.setText("");
             win.show("home");
@@ -137,7 +132,6 @@ public class HelpPanel extends JPanel {
         });
         
         form.add(send);
-        
         mainContent.add(form);
         add(new JScrollPane(mainContent), BorderLayout.CENTER);
     }

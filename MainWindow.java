@@ -8,13 +8,11 @@ public class MainWindow extends JFrame {
 
     private ScholarshipDetailPanel detailPanel;
     private ApplicationFormPanel applyPanel;
-    
-    // Variabel untuk menyimpan instance panel yang akan di-refresh
     private StatusOverviewPanel statusPanel;
 
     public MainWindow() {
         setTitle("Sistem Beasiswa Universitas Riau");
-        setSize(1000,650);
+        setSize(1100,700);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
 
@@ -35,8 +33,6 @@ public class MainWindow extends JFrame {
         StatusOverviewPanel status = new StatusOverviewPanel(this, store);
         StatusDetailPanel statusDetail = new StatusDetailPanel(this, store);
         CongratulationsPanel congrats = new CongratulationsPanel(this, store);
-        
-        // TAMBAHAN: PANEL PENGUMUMAN BARU
         AnnouncementPanel announcement = new AnnouncementPanel(this, store);
         
         // Admin panels
@@ -46,10 +42,8 @@ public class MainWindow extends JFrame {
         ManageAnnouncementsPanel manageAnnounce = new ManageAnnouncementsPanel(this, store);
         ReportsPanel reports = new ReportsPanel(this, store);
 
-        detailPanel = new ScholarshipDetailPanel(this, store);
-        applyPanel = new ApplicationFormPanel(this, store);
-        
-        // Simpan referensi ke statusPanel
+        detailPanel = detail;
+        applyPanel = apply;
         statusPanel = status;
 
         // Add all panels to cards
@@ -65,8 +59,6 @@ public class MainWindow extends JFrame {
         cards.add(status, "status");
         cards.add(statusDetail, "statusDetail");
         cards.add(congrats, "congrats");
-        
-        // TAMBAHAN: PANEL PENGUMUMAN BARU
         cards.add(announcement, "announcement");
         
         // Admin panels
@@ -75,12 +67,8 @@ public class MainWindow extends JFrame {
         cards.add(manageApps, "manageApplicants");
         cards.add(manageAnnounce, "manageAnnouncements");
         cards.add(reports, "reports");
-
-        cards.add(detailPanel, "detail");
-        cards.add(applyPanel, "apply");
         
         add(cards);
-        // Start at login
         show("login");
     }
 
@@ -93,21 +81,34 @@ public class MainWindow extends JFrame {
     }
 
     public void show(String name) {
-        // --- TAMBAHAN: REFRESH PANEL STATUS SAAT AKAN DITAMPILKAN ---
         if (name.equals("status") && statusPanel != null) {
             statusPanel.refresh();
         }
-        // -------------------------------------------------------------
         
         cardLayout.show(cards, name);
     }
     
     public JPanel getPanel(String name) {
-        // Perbaikan pada getPanel agar bisa mengambil instance panel dengan benar
         for(Component comp : cards.getComponents()){
-            if (comp.getName() != null && comp.getName().equals(name)) {
-                return (JPanel) comp;
-            }
+            // Check by class name
+            if(comp instanceof LoginPanel && name.equals("login")) return (JPanel)comp;
+            if(comp instanceof SignupPanel && name.equals("signup")) return (JPanel)comp;
+            if(comp instanceof LoadingPanel && name.equals("loading")) return (JPanel)comp;
+            if(comp instanceof HomePanel && name.equals("home")) return (JPanel)comp;
+            if(comp instanceof HelpPanel && name.equals("help")) return (JPanel)comp;
+            if(comp instanceof ScholarshipListPanel && name.equals("list")) return (JPanel)comp;
+            if(comp instanceof ScholarshipDetailPanel && name.equals("detail")) return (JPanel)comp;
+            if(comp instanceof ApplicationFormPanel && name.equals("apply")) return (JPanel)comp;
+            if(comp instanceof ThankYouPanel && name.equals("thanks")) return (JPanel)comp;
+            if(comp instanceof StatusOverviewPanel && name.equals("status")) return (JPanel)comp;
+            if(comp instanceof StatusDetailPanel && name.equals("statusDetail")) return (JPanel)comp;
+            if(comp instanceof CongratulationsPanel && name.equals("congrats")) return (JPanel)comp;
+            if(comp instanceof AnnouncementPanel && name.equals("announcement")) return (JPanel)comp;
+            if(comp instanceof AdminHomePanel && name.equals("adminHome")) return (JPanel)comp;
+            if(comp instanceof ManageScholarshipsPanel && name.equals("manageScholarships")) return (JPanel)comp;
+            if(comp instanceof ManageApplicantsPanel && name.equals("manageApplicants")) return (JPanel)comp;
+            if(comp instanceof ManageAnnouncementsPanel && name.equals("manageAnnouncements")) return (JPanel)comp;
+            if(comp instanceof ReportsPanel && name.equals("reports")) return (JPanel)comp;
         }
         return null;
     }

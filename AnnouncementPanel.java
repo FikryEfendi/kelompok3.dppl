@@ -56,17 +56,15 @@ public class AnnouncementPanel extends JPanel {
             if(Files.exists(path) && Files.size(path) > 0){
                 List<String> lines = Files.readAllLines(path);
                 
-                // Tampilkan dari yang terbaru (reverse loop)
                 for(int i = lines.size() - 1; i >= 0; i--){
                     String line = lines.get(i);
                     String[] parts = line.split("\\|");
                     if(parts.length >= 4){
-                        // parts[0]: Tanggal, parts[1]: Judul, parts[2]: Tipe, parts[3]: Status, parts[4]: Path Detail (jika ada)
                         String detailPath = parts.length > 4 ? parts[4] : ""; 
                         
                         JPanel item = createAnnouncementCard(parts[1], parts[0], detailPath);
                         listPanel.add(item);
-                        listPanel.add(Box.createRigidArea(new Dimension(0, 15)));
+                        listPanel.add(Box.createRigidArea(new Dimension(0, 20)));
                     }
                 }
                 
@@ -81,54 +79,79 @@ public class AnnouncementPanel extends JPanel {
     }
     
     private JPanel createAnnouncementCard(String title, String date, String detailPath){
-        JPanel card = new JPanel(new BorderLayout(20, 0));
+        JPanel card = new JPanel(new BorderLayout(25, 0));
         card.setBackground(Color.WHITE);
         card.setBorder(BorderFactory.createCompoundBorder(
             BorderFactory.createLineBorder(new Color(167, 243, 208), 2, true),
-            BorderFactory.createEmptyBorder(20, 25, 20, 25)
+            BorderFactory.createEmptyBorder(25, 30, 25, 30)
         ));
         card.setAlignmentX(Component.LEFT_ALIGNMENT);
-        card.setMaximumSize(new Dimension(Integer.MAX_VALUE, 100));
+        card.setMaximumSize(new Dimension(Integer.MAX_VALUE, 120));
         
-        // Left Content (Title and Date)
+        // Left Content (Icon + Text)
+        JPanel leftContent = new JPanel(new BorderLayout(15, 0));
+        leftContent.setBackground(Color.WHITE);
+        
+        // Icon Panel
+        JPanel iconPanel = new JPanel(new GridBagLayout());
+        iconPanel.setBackground(Color.WHITE);
+        iconPanel.setPreferredSize(new Dimension(60, 60));
+        
+        JLabel icon = new JLabel("📢");
+        icon.setFont(new Font("Segoe UI Symbol", Font.PLAIN, 40));
+        iconPanel.add(icon);
+        
+        // Text Panel
         JPanel textPanel = new JPanel();
         textPanel.setLayout(new BoxLayout(textPanel, BoxLayout.Y_AXIS));
         textPanel.setBackground(Color.WHITE);
         
-        JLabel titleLabel = new JLabel("📢 " + title);
-        titleLabel.setFont(new Font("Segoe UI Symbol", Font.BOLD, 16));
+        JLabel titleLabel = new JLabel(title);
+        titleLabel.setFont(new Font("Segoe UI Symbol", Font.BOLD, 18));
         titleLabel.setForeground(new Color(6, 78, 59));
         titleLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
         
-        JLabel dateLabel = new JLabel("Dipublikasikan: " + date);
-        dateLabel.setFont(new Font("Segoe UI Symbol", Font.PLAIN, 12));
+        JLabel dateLabel = new JLabel("📅 Dipublikasikan: " + date);
+        dateLabel.setFont(new Font("Segoe UI Symbol", Font.PLAIN, 13));
         dateLabel.setForeground(new Color(107, 114, 128));
         dateLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
         
         textPanel.add(titleLabel);
-        textPanel.add(Box.createRigidArea(new Dimension(0, 5)));
+        textPanel.add(Box.createRigidArea(new Dimension(0, 8)));
         textPanel.add(dateLabel);
+        
+        leftContent.add(iconPanel, BorderLayout.WEST);
+        leftContent.add(textPanel, BorderLayout.CENTER);
         
         // Right Content (Detail Button)
         JButton detailBtn = new JButton("Lihat Detail");
-        detailBtn.setFont(new Font("Segoe UI Symbol", Font.BOLD, 13));
+        detailBtn.setFont(new Font("Segoe UI Symbol", Font.BOLD, 14));
         detailBtn.setForeground(Color.WHITE);
-        detailBtn.setBackground(new Color(59, 130, 246)); // Blue
+        detailBtn.setBackground(new Color(59, 130, 246));
         detailBtn.setBorderPainted(false);
         detailBtn.setFocusPainted(false);
         detailBtn.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        detailBtn.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
+        detailBtn.setBorder(BorderFactory.createEmptyBorder(12, 25, 12, 25));
         
         if(!detailPath.isEmpty()){
             detailBtn.addActionListener(e -> showDetailDialog(title, detailPath));
             detailBtn.setEnabled(true);
+            
+            detailBtn.addMouseListener(new java.awt.event.MouseAdapter() {
+                public void mouseEntered(java.awt.event.MouseEvent evt) {
+                    detailBtn.setBackground(new Color(37, 99, 235));
+                }
+                public void mouseExited(java.awt.event.MouseEvent evt) {
+                    detailBtn.setBackground(new Color(59, 130, 246));
+                }
+            });
         } else {
             detailBtn.setText("Tidak Ada Detail");
-            detailBtn.setBackground(new Color(107, 114, 128));
+            detailBtn.setBackground(new Color(156, 163, 175));
             detailBtn.setEnabled(false);
         }
 
-        card.add(textPanel, BorderLayout.CENTER);
+        card.add(leftContent, BorderLayout.CENTER);
         card.add(detailBtn, BorderLayout.EAST);
         
         return card;
@@ -139,7 +162,7 @@ public class AnnouncementPanel extends JPanel {
             String content = new String(Files.readAllBytes(Paths.get(detailPath)));
             
             JDialog dialog = new JDialog(win, "Detail Pengumuman: " + title, true);
-            dialog.setSize(600, 500);
+            dialog.setSize(650, 550);
             dialog.setLocationRelativeTo(win);
             dialog.setLayout(new BorderLayout());
             
@@ -147,21 +170,24 @@ public class AnnouncementPanel extends JPanel {
             textArea.setEditable(false);
             textArea.setLineWrap(true);
             textArea.setWrapStyleWord(true);
-            textArea.setFont(new Font("Monospaced", Font.PLAIN, 13));
-            textArea.setBorder(BorderFactory.createEmptyBorder(15, 15, 15, 15));
+            textArea.setFont(new Font("Segoe UI Symbol", Font.PLAIN, 14));
+            textArea.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
             
             JScrollPane scrollPane = new JScrollPane(textArea);
             
             dialog.add(scrollPane, BorderLayout.CENTER);
             
             JButton closeBtn = new JButton("Tutup");
-            closeBtn.setFont(new Font("Segoe UI Symbol", Font.BOLD, 13));
+            closeBtn.setFont(new Font("Segoe UI Symbol", Font.BOLD, 14));
             closeBtn.setBackground(new Color(16, 185, 129));
             closeBtn.setForeground(Color.WHITE);
+            closeBtn.setBorderPainted(false);
+            closeBtn.setCursor(new Cursor(Cursor.HAND_CURSOR));
+            closeBtn.setBorder(BorderFactory.createEmptyBorder(12, 30, 12, 30));
             closeBtn.addActionListener(e -> dialog.dispose());
             
             JPanel btnPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-            btnPanel.setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 10));
+            btnPanel.setBorder(BorderFactory.createEmptyBorder(10, 15, 10, 15));
             btnPanel.add(closeBtn);
             
             dialog.add(btnPanel, BorderLayout.SOUTH);
@@ -178,39 +204,63 @@ public class AnnouncementPanel extends JPanel {
         empty.setBackground(Color.WHITE);
         empty.setBorder(BorderFactory.createCompoundBorder(
             BorderFactory.createLineBorder(new Color(167, 243, 208), 2, true),
-            BorderFactory.createEmptyBorder(60, 40, 60, 40)
+            BorderFactory.createEmptyBorder(80, 50, 80, 50)
         ));
         empty.setAlignmentX(Component.LEFT_ALIGNMENT);
         
-        JLabel icon = new JLabel("❌");
-        icon.setFont(new Font("Segoe UI Symbol", Font.PLAIN, 64));
+        JLabel icon = new JLabel("📭");
+        icon.setFont(new Font("Segoe UI Symbol", Font.PLAIN, 72));
         icon.setAlignmentX(Component.CENTER_ALIGNMENT);
         
         JLabel title = new JLabel("Belum Ada Pengumuman");
-        title.setFont(new Font("Segoe UI Symbol", Font.BOLD, 20));
+        title.setFont(new Font("Segoe UI Symbol", Font.BOLD, 24));
         title.setForeground(new Color(6, 78, 59));
         title.setAlignmentX(Component.CENTER_ALIGNMENT);
         
         JLabel desc = new JLabel("Admin belum mempublikasikan pengumuman apapun.");
-        desc.setFont(new Font("Segoe UI Symbol", Font.PLAIN, 14));
+        desc.setFont(new Font("Segoe UI Symbol", Font.PLAIN, 15));
         desc.setForeground(new Color(107, 114, 128));
         desc.setAlignmentX(Component.CENTER_ALIGNMENT);
         
         empty.add(icon);
-        empty.add(Box.createRigidArea(new Dimension(0, 20)));
+        empty.add(Box.createRigidArea(new Dimension(0, 25)));
         empty.add(title);
-        empty.add(Box.createRigidArea(new Dimension(0, 10)));
+        empty.add(Box.createRigidArea(new Dimension(0, 12)));
         empty.add(desc);
         
         return empty;
     }
     
     private JPanel createErrorState(String message) {
-        // Sama seperti createEmptyState, namun untuk pesan error
-        JPanel error = createEmptyState();
-        ((JLabel)error.getComponent(0)).setText("⚠️");
-        ((JLabel)error.getComponent(2)).setText("Gagal Memuat Data");
-        ((JLabel)error.getComponent(4)).setText(message);
+        JPanel error = new JPanel();
+        error.setLayout(new BoxLayout(error, BoxLayout.Y_AXIS));
+        error.setBackground(Color.WHITE);
+        error.setBorder(BorderFactory.createCompoundBorder(
+            BorderFactory.createLineBorder(new Color(239, 68, 68), 2, true),
+            BorderFactory.createEmptyBorder(80, 50, 80, 50)
+        ));
+        error.setAlignmentX(Component.LEFT_ALIGNMENT);
+        
+        JLabel icon = new JLabel("⚠️");
+        icon.setFont(new Font("Segoe UI Symbol", Font.PLAIN, 72));
+        icon.setAlignmentX(Component.CENTER_ALIGNMENT);
+        
+        JLabel title = new JLabel("Gagal Memuat Data");
+        title.setFont(new Font("Segoe UI Symbol", Font.BOLD, 24));
+        title.setForeground(new Color(239, 68, 68));
+        title.setAlignmentX(Component.CENTER_ALIGNMENT);
+        
+        JLabel desc = new JLabel("<html><center>" + message + "</center></html>");
+        desc.setFont(new Font("Segoe UI Symbol", Font.PLAIN, 14));
+        desc.setForeground(new Color(107, 114, 128));
+        desc.setAlignmentX(Component.CENTER_ALIGNMENT);
+        
+        error.add(icon);
+        error.add(Box.createRigidArea(new Dimension(0, 25)));
+        error.add(title);
+        error.add(Box.createRigidArea(new Dimension(0, 12)));
+        error.add(desc);
+        
         return error;
     }
 }

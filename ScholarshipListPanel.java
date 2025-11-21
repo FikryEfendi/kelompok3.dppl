@@ -39,7 +39,7 @@ public class ScholarshipListPanel extends JPanel {
         // Main content area
         JPanel mainContent = new JPanel();
         mainContent.setLayout(new BoxLayout(mainContent, BoxLayout.Y_AXIS));
-        mainContent.setBorder(BorderFactory.createEmptyBorder(20,20,20,20));
+        mainContent.setBorder(BorderFactory.createEmptyBorder(30, 40, 30, 40));
         mainContent.setBackground(new Color(240, 253, 244));
         
         // Load scholarships from database
@@ -48,13 +48,15 @@ public class ScholarshipListPanel extends JPanel {
         for(Scholarship sch : scholarships){
             if(!sch.status.equals("Active")) continue; // Only show active scholarships
             
-            JPanel item = new JPanel(new BorderLayout(15, 10));
+            JPanel item = new JPanel();
+            item.setLayout(new BorderLayout(20, 15));
             item.setBackground(Color.WHITE);
             item.setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createLineBorder(new Color(167, 243, 208), 2, true),
-                BorderFactory.createEmptyBorder(20, 20, 20, 20)
+                BorderFactory.createEmptyBorder(25, 25, 25, 25)
             ));
-            item.setMaximumSize(new Dimension(Integer.MAX_VALUE, 200));
+            item.setAlignmentX(Component.LEFT_ALIGNMENT);
+            item.setMaximumSize(new Dimension(Integer.MAX_VALUE, 180));
             
             // Left panel with icon
             JPanel leftPanel = new JPanel();
@@ -62,9 +64,12 @@ public class ScholarshipListPanel extends JPanel {
             leftPanel.setBackground(Color.WHITE);
             
             JLabel icon = new JLabel("🎓");
-            icon.setFont(new Font("Segoe UI Symbol", Font.PLAIN, 48));
+            icon.setFont(new Font("Segoe UI Symbol", Font.PLAIN, 52));
             icon.setAlignmentX(Component.CENTER_ALIGNMENT);
+            
+            leftPanel.add(Box.createVerticalGlue());
             leftPanel.add(icon);
+            leftPanel.add(Box.createVerticalGlue());
             
             // Main content panel
             JPanel contentPanel = new JPanel();
@@ -76,13 +81,14 @@ public class ScholarshipListPanel extends JPanel {
             titleLabel.setForeground(new Color(6, 78, 59));
             titleLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
             
-            JLabel descLabel = new JLabel("<html>" + sch.description + "</html>");
+            JLabel descLabel = new JLabel("<html><p style='width:450px;'>" + sch.description + "</p></html>");
             descLabel.setFont(new Font("Segoe UI Symbol", Font.PLAIN, 13));
             descLabel.setForeground(new Color(75, 85, 99));
             descLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
             
-            JPanel infoPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 15, 5));
+            JPanel infoPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 20, 0));
             infoPanel.setBackground(Color.WHITE);
+            infoPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
             
             JLabel quotaLabel = new JLabel("📊 Kuota: " + sch.quota);
             quotaLabel.setFont(new Font("Segoe UI Symbol", Font.PLAIN, 12));
@@ -96,14 +102,13 @@ public class ScholarshipListPanel extends JPanel {
             infoPanel.add(deadlineLabel);
             
             contentPanel.add(titleLabel);
-            contentPanel.add(Box.createRigidArea(new Dimension(0, 8)));
-            contentPanel.add(descLabel);
             contentPanel.add(Box.createRigidArea(new Dimension(0, 10)));
+            contentPanel.add(descLabel);
+            contentPanel.add(Box.createRigidArea(new Dimension(0, 12)));
             contentPanel.add(infoPanel);
             
             // Right panel with button
-            JPanel rightPanel = new JPanel();
-            rightPanel.setLayout(new BoxLayout(rightPanel, BoxLayout.Y_AXIS));
+            JPanel rightPanel = new JPanel(new GridBagLayout());
             rightPanel.setBackground(Color.WHITE);
             
             JButton detailBtn = new JButton("Lihat Detail"); 
@@ -113,8 +118,7 @@ public class ScholarshipListPanel extends JPanel {
             detailBtn.setBorderPainted(false);
             detailBtn.setFocusPainted(false);
             detailBtn.setCursor(new Cursor(Cursor.HAND_CURSOR));
-            detailBtn.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
-            detailBtn.setAlignmentX(Component.CENTER_ALIGNMENT);
+            detailBtn.setBorder(BorderFactory.createEmptyBorder(12, 25, 12, 25));
             
             final String scholarshipId = sch.id;
             detailBtn.addActionListener(e -> {
@@ -139,17 +143,33 @@ public class ScholarshipListPanel extends JPanel {
             item.add(rightPanel, BorderLayout.EAST);
             
             mainContent.add(item);
-            mainContent.add(Box.createRigidArea(new Dimension(0, 15)));
+            mainContent.add(Box.createRigidArea(new Dimension(0, 20)));
         }
         
         if(scholarships.isEmpty() || scholarships.stream().noneMatch(s -> s.status.equals("Active"))){
+            JPanel emptyPanel = new JPanel();
+            emptyPanel.setLayout(new BoxLayout(emptyPanel, BoxLayout.Y_AXIS));
+            emptyPanel.setBackground(Color.WHITE);
+            emptyPanel.setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createLineBorder(new Color(167, 243, 208), 2, true),
+                BorderFactory.createEmptyBorder(60, 40, 60, 40)
+            ));
+            emptyPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
+            
+            JLabel emptyIcon = new JLabel("📚");
+            emptyIcon.setFont(new Font("Segoe UI Symbol", Font.PLAIN, 64));
+            emptyIcon.setAlignmentX(Component.CENTER_ALIGNMENT);
+            
             JLabel noData = new JLabel("Belum ada beasiswa tersedia saat ini");
-            noData.setFont(new Font("Segoe UI Symbol", Font.PLAIN, 14));
+            noData.setFont(new Font("Segoe UI Symbol", Font.BOLD, 18));
             noData.setForeground(new Color(107, 114, 128));
             noData.setAlignmentX(Component.CENTER_ALIGNMENT);
-            mainContent.add(Box.createVerticalGlue());
-            mainContent.add(noData);
-            mainContent.add(Box.createVerticalGlue());
+            
+            emptyPanel.add(emptyIcon);
+            emptyPanel.add(Box.createRigidArea(new Dimension(0, 15)));
+            emptyPanel.add(noData);
+            
+            mainContent.add(emptyPanel);
         }
         
         add(new JScrollPane(mainContent), BorderLayout.CENTER);

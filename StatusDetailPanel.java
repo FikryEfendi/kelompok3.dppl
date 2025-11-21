@@ -4,10 +4,7 @@ import javax.swing.*;
 public class StatusDetailPanel extends JPanel {
     MainWindow win; 
     DataStore store;
-    
-    // Properti untuk menyimpan aplikasi yang sedang ditampilkan
     private Application currentApplication; 
-    
     private JPanel detailContent;
 
     public StatusDetailPanel(MainWindow win, DataStore store){
@@ -15,11 +12,9 @@ public class StatusDetailPanel extends JPanel {
         this.store=store;
     }
     
-    // Method baru untuk memuat dan menampilkan detail aplikasi
     public void loadApplication(Application app){
         this.currentApplication = app;
         
-        // Membersihkan dan menyusun ulang layout setiap kali dipanggil
         removeAll();
         setLayout(new BorderLayout());
         setBackground(Color.WHITE);
@@ -38,11 +33,12 @@ public class StatusDetailPanel extends JPanel {
         back.setCursor(new Cursor(Cursor.HAND_CURSOR));
         back.setBorder(BorderFactory.createEmptyBorder(8, 15, 8, 15));
         back.addActionListener(e -> {
-            ((StatusOverviewPanel)win.getPanel("status")).refresh(); // Refresh overview sebelum kembali
+            StatusOverviewPanel overviewPanel = (StatusOverviewPanel)win.getPanel("status");
+            if(overviewPanel != null) overviewPanel.refresh();
             win.show("status");
         }); 
         
-        JLabel titleLabel = new JLabel("🔍 Detail Pendaftaran");
+        JLabel titleLabel = new JLabel("📝 Detail Pendaftaran");
         titleLabel.setFont(new Font("Segoe UI Symbol", Font.BOLD, 20));
         titleLabel.setForeground(Color.WHITE);
         
@@ -62,35 +58,37 @@ public class StatusDetailPanel extends JPanel {
         detailContent.setBackground(Color.WHITE);
         detailContent.setBorder(BorderFactory.createCompoundBorder(
             BorderFactory.createLineBorder(new Color(167, 243, 208), 2, true),
-            BorderFactory.createEmptyBorder(30, 30, 30, 30)
+            BorderFactory.createEmptyBorder(35, 35, 35, 35)
         ));
         detailContent.setAlignmentX(Component.LEFT_ALIGNMENT);
         
         JLabel header = new JLabel("Pendaftaran Beasiswa: " + app.scholarshipName);
-        header.setFont(new Font("Segoe UI Symbol", Font.BOLD, 22));
+        header.setFont(new Font("Segoe UI Symbol", Font.BOLD, 24));
         header.setForeground(new Color(6, 78, 59));
         header.setAlignmentX(Component.LEFT_ALIGNMENT);
         detailContent.add(header);
-        detailContent.add(Box.createRigidArea(new Dimension(0, 20)));
+        detailContent.add(Box.createRigidArea(new Dimension(0, 25)));
         
-        // Tampilkan Status Saat Ini
+        // Status Badge
         JLabel statusLabel = createStatusBadge(app.status);
         detailContent.add(statusLabel);
-        detailContent.add(Box.createRigidArea(new Dimension(0, 20)));
+        detailContent.add(Box.createRigidArea(new Dimension(0, 30)));
         
-        // Tabel Data Diri
-        detailContent.add(createTitle("Data Diri Pendaftar"));
-        detailContent.add(createDetailRow("NIM:", app.nim));
-        detailContent.add(createDetailRow("Nama Lengkap:", app.fullName));
-        detailContent.add(createDetailRow("Tempat/Tgl Lahir:", app.ttl));
-        detailContent.add(createDetailRow("NIK:", app.nik));
-        detailContent.add(createDetailRow("Alamat:", app.address));
+        // Data Diri Section
+        detailContent.add(createSectionTitle("👤 Data Diri Pendaftar"));
+        detailContent.add(Box.createRigidArea(new Dimension(0, 15)));
+        detailContent.add(createDetailRow("NIM", app.nim));
+        detailContent.add(createDetailRow("Nama Lengkap", app.fullName));
+        detailContent.add(createDetailRow("Tempat/Tgl Lahir", app.ttl));
+        detailContent.add(createDetailRow("NIK", app.nik));
+        detailContent.add(createDetailRow("Alamat", app.address));
         
-        detailContent.add(Box.createRigidArea(new Dimension(0, 20)));
+        detailContent.add(Box.createRigidArea(new Dimension(0, 30)));
         
-        // Detail Dokumen
-        detailContent.add(createTitle("Dokumen & Kelengkapan"));
-        detailContent.add(createDetailRow("Pas Foto:", app.photoPath));
+        // Dokumen Section
+        detailContent.add(createSectionTitle("📎 Dokumen & Kelengkapan"));
+        detailContent.add(Box.createRigidArea(new Dimension(0, 15)));
+        detailContent.add(createDetailRow("Pas Foto", app.photoPath));
 
         mainContent.add(detailContent);
         add(new JScrollPane(mainContent), BorderLayout.CENTER);
@@ -99,27 +97,31 @@ public class StatusDetailPanel extends JPanel {
         repaint();
     }
     
-    private JLabel createTitle(String text){
-         JLabel label = new JLabel(text);
-        label.setFont(new Font("Segoe UI Symbol", Font.BOLD, 16));
-        label.setForeground(new Color(55, 65, 81));
-        label.setBorder(BorderFactory.createEmptyBorder(5, 0, 10, 0));
+    private JLabel createSectionTitle(String text){
+        JLabel label = new JLabel(text);
+        label.setFont(new Font("Segoe UI Symbol", Font.BOLD, 18));
+        label.setForeground(new Color(31, 41, 55));
         label.setAlignmentX(Component.LEFT_ALIGNMENT);
         return label;
     }
     
     private JPanel createDetailRow(String label, String value){
-        JPanel row = new JPanel(new BorderLayout(15, 0));
-        row.setBackground(Color.WHITE);
-        row.setMaximumSize(new Dimension(Integer.MAX_VALUE, 30));
+        JPanel row = new JPanel(new BorderLayout(20, 0));
+        row.setBackground(new Color(249, 250, 251));
+        row.setBorder(BorderFactory.createCompoundBorder(
+            BorderFactory.createMatteBorder(0, 0, 1, 0, new Color(229, 231, 235)),
+            BorderFactory.createEmptyBorder(12, 15, 12, 15)
+        ));
+        row.setMaximumSize(new Dimension(Integer.MAX_VALUE, 50));
+        row.setAlignmentX(Component.LEFT_ALIGNMENT);
         
-        JLabel lblLabel = new JLabel("  " + label);
-        lblLabel.setFont(new Font("Segoe UI Symbol", Font.BOLD, 13));
-        lblLabel.setForeground(new Color(107, 114, 128));
-        lblLabel.setPreferredSize(new Dimension(150, 20));
+        JLabel lblLabel = new JLabel(label);
+        lblLabel.setFont(new Font("Segoe UI Symbol", Font.BOLD, 14));
+        lblLabel.setForeground(new Color(75, 85, 99));
+        lblLabel.setPreferredSize(new Dimension(180, 25));
         
-        JLabel lblValue = new JLabel("<html><b>" + value + "</b></html>");
-        lblValue.setFont(new Font("Segoe UI Symbol", Font.PLAIN, 13));
+        JLabel lblValue = new JLabel(value);
+        lblValue.setFont(new Font("Segoe UI Symbol", Font.PLAIN, 14));
         lblValue.setForeground(new Color(31, 41, 55));
         
         row.add(lblLabel, BorderLayout.WEST);
@@ -129,24 +131,23 @@ public class StatusDetailPanel extends JPanel {
     }
     
     private JLabel createStatusBadge(String status){
-        JLabel statusLabel = new JLabel("STATUS SAAT INI: " + status.toUpperCase());
-        statusLabel.setFont(new Font("Segoe UI Symbol", Font.BOLD, 14));
+        JLabel statusLabel = new JLabel("  STATUS: " + status.toUpperCase() + "  ");
+        statusLabel.setFont(new Font("Segoe UI Symbol", Font.BOLD, 15));
         statusLabel.setForeground(Color.WHITE);
         statusLabel.setOpaque(true);
-        statusLabel.setBorder(BorderFactory.createEmptyBorder(10, 15, 10, 15));
+        statusLabel.setBorder(BorderFactory.createEmptyBorder(12, 20, 12, 20));
         statusLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
         
-        // Set color based on status
         if(status.equals("Pending")){
-            statusLabel.setBackground(new Color(245, 158, 11)); // Orange
+            statusLabel.setBackground(new Color(245, 158, 11));
         } else if(status.equals("Verified")){
-            statusLabel.setBackground(new Color(59, 130, 246)); // Blue
+            statusLabel.setBackground(new Color(59, 130, 246));
         } else if(status.equals("Accepted")){
-            statusLabel.setBackground(new Color(34, 197, 94)); // Green
+            statusLabel.setBackground(new Color(34, 197, 94));
         } else if(status.equals("Rejected")){
-            statusLabel.setBackground(new Color(239, 68, 68)); // Red
+            statusLabel.setBackground(new Color(239, 68, 68));
         } else {
-            statusLabel.setBackground(new Color(107, 114, 128)); // Gray
+            statusLabel.setBackground(new Color(107, 114, 128));
         }
         return statusLabel;
     }
